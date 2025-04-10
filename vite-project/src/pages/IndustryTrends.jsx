@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { FaChartLine, FaSearch, FaBookOpen, FaVideo, FaNewspaper, FaArrowRight, FaPlus } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -62,6 +64,9 @@ function IndustryTrends() {
     url: '',
     duration: ''
   });
+  const [email, setEmail] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
 
   // Fetch real data from Dev.to API and other sources
   useEffect(() => {
@@ -146,18 +151,20 @@ function IndustryTrends() {
   const handleAddPost = async (e) => {
     e.preventDefault();
     try {
-      // In a real app, you would send this to your backend
+      // Create new post data
       const newPostData = {
         ...newPost,
         id: Date.now().toString(),
         date: new Date().toLocaleDateString()
       };
 
+      // Update the state with the new post
       setTrendsData(prev => ({
         ...prev,
-        [newPost.type]: [...prev[newPost.type], newPostData]
+        [newPost.type]: [...(prev[newPost.type] || []), newPostData]
       }));
 
+      // Reset form
       setNewPost({
         title: '',
         author: '',
@@ -167,16 +174,49 @@ function IndustryTrends() {
         duration: ''
       });
       setShowAddForm(false);
+      toast.success('Content added successfully!');
     } catch (err) {
       console.error('Error adding post:', err);
+      toast.error('Failed to add content. Please try again.');
     }
   };
 
-  const filteredItems = trendsData[activeTab].filter(item =>
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    
+    if (!email) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    try {
+      setIsSubscribing(true);
+      
+      // In a real app, you would send this to your backend
+      // For demo purposes, we'll simulate an API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSubscriptionSuccess(true);
+      setEmail('');
+      toast.success('Subscription successful! You will receive our weekly updates.');
+    } catch (err) {
+      console.error('Subscription error:', err);
+      toast.error('Subscription failed. Please try again later.');
+    } finally {
+      setIsSubscribing(false);
+    }
+  };
+
+  const filteredItems = trendsData[activeTab]?.filter(item =>
     item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.summary.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.author.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  ) || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden relative">
@@ -386,7 +426,6 @@ function IndustryTrends() {
                   {filteredItems.map((item) => (
                     <motion.div
                       key={item.id}
-                      // variants={itemVariants}
                       whileHover="hover"
                       variants={cardVariants}
                       className="bg-gray-800/50 border border-gray-700 rounded-xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300"
@@ -444,20 +483,34 @@ function IndustryTrends() {
             className="mt-20 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10 rounded-2xl p-8 border border-cyan-500/30"
           >
             <div className="max-w-4xl mx-auto text-center">
-              <h3 className="text-3xl font-bold text-cyan-400 mb-4">Stay Updated</h3>
+              <h3 className="text-3xl font-bold text-cyan-400 mb-4">
+                {subscriptionSuccess ? 'Thank You for Subscribing!' : 'Stay Updated'}
+              </h3>
               <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto">
-                Get the latest industry trends delivered to your inbox every week.
+                {subscriptionSuccess 
+                  ? "You'll receive our weekly industry trends newsletter soon!"
+                  : 'Get the latest industry trends delivered to your inbox every week.'}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="flex-1 bg-gray-800/70 border border-gray-700 rounded-full py-3 px-6 text-white focus:outline-none focus:border-cyan-500"
-                />
-                <button className="bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-3 px-6 rounded-full transition-colors">
-                  Subscribe
-                </button>
-              </div>
+              
+              {!subscriptionSuccess && (
+                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                  <input
+                    type="email"
+                    placeholder="Your email address"
+                    className="flex-1 bg-gray-800/70 border border-gray-700 rounded-full py-3 px-6 text-white focus:outline-none focus:border-cyan-500"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <button 
+                    type="submit"
+                    className="bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-3 px-6 rounded-full transition-colors disabled:opacity-50"
+                    disabled={isSubscribing}
+                  >
+                    {isSubscribing ? 'Subscribing...' : 'Subscribe'}
+                  </button>
+                </form>
+              )}
             </div>
           </motion.div>
         </motion.div>
@@ -467,16 +520,3 @@ function IndustryTrends() {
 }
 
 export default IndustryTrends;
-
-
-// Uncaught TypeError: prev[newPost.type] is not iterable
-//     at IndustryTrends.jsx:158:29
-//     at basicStateReducer (react-dom_client.js?v=3264903e:4503:47)
-//     at updateReducerImpl (react-dom_client.js?v=3264903e:4591:73)
-//     at updateReducer (react-dom_client.js?v=3264903e:4536:16)
-//     at Object.useState (react-dom_client.js?v=3264903e:16676:20)
-//     at exports.useState (chunk-RUPNRBO7.js?v=3264903e:1094:36)
-//     at IndustryTrends (IndustryTrends.jsx:49:39)
-//     at react-stack-bottom-frame (react-dom_client.js?v=3264903e:16192:20)
-//     at renderWithHooks (react-dom_client.js?v=3264903e:4306:24)
-//     at updateFunctionComponent (react-dom_client.js?v=3264903e:5972:21)Understand this errorAI

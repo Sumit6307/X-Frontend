@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Globe from 'react-globe.gl';
 import Navbar from '../components/Navbar';
-import { FaRocket, FaCode, FaGlobe, FaStar, FaFileAlt, FaBrain, FaLightbulb, FaTrophy, FaHandshake, FaChartLine, FaRobot } from 'react-icons/fa';
+import { FaRocket, FaCode, FaGlobe, FaStar, FaFileAlt, FaBrain, FaLightbulb, FaTrophy, FaHandshake, FaChartLine, FaRobot,FaMapMarkedAlt } from 'react-icons/fa';
 
 // Animation Variants
 const sectionVariants = {
@@ -244,7 +244,15 @@ function Paradise() {
                 desc: 'Get AI-powered career recommendations tailored to your skills, interests, and goals.',
                 extra: 'Personalized roadmap for your dream tech career.',
                 path: '/ai-career-guide'
+              },
+              {
+                title: 'Developer Roadmaps',
+                icon: <FaMapMarkedAlt />, // Make sure to import this icon
+                desc: 'Step-by-step guides to becoming a modern developer in any tech domain.',
+                extra: 'Curated paths from roadmap.sh with direct links to each technology.',
+                path: '/roadmaps' // This will link to your new Roadmap.jsx page
               }
+
             ].map((item, idx) => (
               <motion.div
                 key={idx}

@@ -209,7 +209,7 @@ const Opportunities = () => {
           </motion.p>
           <motion.div className="mt-10" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
             <Link
-              to="/post-opportunity"
+              to="/add-profile"
               className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
             >
               <FaRocket className="mr-2" /> Post an Opportunity
@@ -359,12 +359,17 @@ const Opportunities = () => {
             <h3 className="text-3xl md:text-4xl font-bold mb-6">Ready to launch your career into orbit?</h3>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-8">Join thousands of developers finding jobs across India</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold shadow-lg">
+                <Link to="/add-profile">
+                <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold shadow-lg">
                 Create Your Profile
               </motion.button>
+              </Link>
+
+              <Link to="https://nakuri.com/" target= '_blank'> 
               <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="px-8 py-4 bg-transparent border border-cyan-400 rounded-full font-semibold">
                 Browse All Opportunities
               </motion.button>
+              </Link>
             </div>
           </div>
         </motion.div>

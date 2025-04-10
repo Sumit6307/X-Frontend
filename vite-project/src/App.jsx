@@ -17,6 +17,7 @@ import ResumeBuilding from './pages/ResumeBuilding';
 import AiToolsHub from './pages/AiToolsHub';
 import IndustryTrends from './pages/IndustryTrends';
 import AICareerGuide from './pages/AICarrerGuide';
+import Roadmap from './pages/RoadMap';
 
 function App() {
   const [theme, setTheme] = useState('dark');
@@ -41,6 +42,7 @@ function App() {
           <Route path="/ai-tools-hub" element={<AiToolsHub />} />
           <Route path="/industry-trends" element={<IndustryTrends />} />
           <Route path="/ai-career-guide" element={<AICareerGuide/>} />
+          <Route path="/roadmaps" element={<Roadmap />} />
           
 
         </Routes>

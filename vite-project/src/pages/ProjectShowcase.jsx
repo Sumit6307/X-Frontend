@@ -4,6 +4,7 @@ import { FaGithub, FaExternalLinkAlt, FaRegStar, FaCodeBranch, FaEye } from 'rea
 import { SiJavascript, SiReact, SiPython, SiNodedotjs, SiTypescript } from 'react-icons/si';
 import { IoMdSearch } from 'react-icons/io';
 import { RiLightbulbFlashLine } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 
 const ProjectShowcase = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -397,6 +398,7 @@ const ProjectShowcase = () => {
               Showcase your work to thousands of developers and get valuable feedback
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
+               <Link to="/add-profile">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -404,6 +406,8 @@ const ProjectShowcase = () => {
               >
                 Submit Your Project
               </motion.button>
+              </Link>
+              <Link to="https://www.codecademy.com/pages/showcase-submission" target='_blank'>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -411,6 +415,7 @@ const ProjectShowcase = () => {
               >
                 View Submission Guidelines
               </motion.button>
+              </Link>
             </div>
           </div>
         </motion.div>

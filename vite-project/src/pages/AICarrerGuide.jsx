@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
 import { FaRobot, FaChartLine, FaUniversity, FaBriefcase, FaSearch, FaArrowRight, FaStar, FaLinkedin, FaGithub } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -577,9 +578,11 @@ function AICareerGuide() {
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-6">
               Join our AI Career Accelerator program and get 1:1 mentorship, project experience, and job placement support.
             </p>
-            <button className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold py-3 px-8 rounded-full transition-colors">
+            <Link to="https://topmate.io/a_boy_called_sumit">
+            <button  className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold py-3 px-8 rounded-full transition-colors">
               Apply Now
             </button>
+            </Link>
           </motion.div>
         </motion.div>
       </div>

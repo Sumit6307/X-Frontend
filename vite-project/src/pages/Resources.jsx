@@ -4,6 +4,7 @@ import { FaCode, FaBook, FaVideo, FaTools, FaLaptopCode, FaGraduationCap } from 
 import { SiJavascript, SiReact, SiPython, SiNodedotjs } from 'react-icons/si';
 import { IoMdSearch } from 'react-icons/io';
 import { RiMentalHealthLine } from 'react-icons/ri';
+import { Link } from 'react-router-dom';
 
 const Resources = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -323,6 +324,7 @@ const Resources = () => {
               Contribute to our cosmic collection and help fellow developers level up their skills
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link to="/add-profile">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -330,6 +332,8 @@ const Resources = () => {
               >
                 Submit a Resource
               </motion.button>
+              </Link>
+              <Link to="https://enhancv.com/blog/submitting-a-resume/" target='_blank'>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -337,6 +341,7 @@ const Resources = () => {
               >
                 View Submission Guidelines
               </motion.button>
+              </Link>
             </div>
           </div>
         </motion.div>
