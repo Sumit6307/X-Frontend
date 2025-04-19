@@ -264,7 +264,7 @@ function Navbar() {
         { name: 'Mentorship', path: '/opportunities', icon: '🧙' },
         { name: 'Remote Work', path: '/opportunities', icon: '🌍' },
         { name: 'Roadmaps', path: '/roadmaps', icon: '🗺️' },
-        { name: 'Certifications', path: '/paradise/certifications', icon: '🏅' }
+        { name: 'Certifications', path: '/certifications', icon: '🏅' }
 
       ]
     },
@@ -274,7 +274,7 @@ function Navbar() {
       items: [
         { name: 'All Resources', path: '/resources', icon: '📂' },
         { name: 'Courses', path: '/resources', icon: '🎓' },
-        { name: 'Notes', path: '/paradise/notes', icon: '📝' },
+        { name: 'Notes', path: '/notes', icon: '📝' },
         { name: 'Tutorials', path: '/resources', icon: '📝' },
         { name: 'Documentation', path: '/resources', icon: '📖' },
         { name: 'Dev Tools', path: '/resources', icon: '🛠️' },
