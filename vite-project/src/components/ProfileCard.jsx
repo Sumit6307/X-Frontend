@@ -1,8 +1,7 @@
-// src/components/ProfileCard.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import { FaInstagram, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaCode, FaShareAlt, FaWhatsapp, FaFacebook, FaLink, FaEdit } from 'react-icons/fa';
 
 // Animation variants for skills
@@ -44,6 +43,22 @@ const shareMenuVariants = {
 function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
   const [isShareMenuOpen, setIsShareMenuOpen] = useState(false);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
+  const [isSkillsHovered, setIsSkillsHovered] = useState(false);
+  const controls = useAnimation(); // Animation controls for skills
+
+  // Start animation on mount
+  useEffect(() => {
+    controls.start('animate');
+  }, [controls]);
+
+  // Handle hover to pause/resume animation
+  useEffect(() => {
+    if (isSkillsHovered) {
+      controls.stop(); // Pause animation instantly
+    } else {
+      controls.start('animate'); // Resume animation
+    }
+  }, [isSkillsHovered, controls]);
 
   // Fetch logged-in user's ID
   useEffect(() => {
@@ -124,9 +139,9 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
   const getCardClasses = () => {
     switch (layout) {
       case 'grid':
-        return 'relative bg-gradient-to-br from-gray-900 to-black border border-cyan-500/20 rounded-xl p-6 w-full overflow-hidden shadow-[0_0_15px_rgba(0,212,255,0.1)] transition-all duration-300';
+        return 'relative bg-gradient-to-br from-gray-900 to-black border border-cyan-500/20 rounded-xl p-6 w-full h-[500px] overflow-hidden shadow-[0_0_15px_rgba(0,212,255,0.1)] transition-all duration-300 flex flex-col';
       case 'masonry':
-        return 'relative bg-gradient-to-br from-gray-900 to-black border border-cyan-500/20 rounded-xl p-6 w-full overflow-hidden shadow-[0_0_15px_rgba(0,212,255,0.1)] transition-all duration-300 h-full';
+        return 'relative bg-gradient-to-br from-gray-900 to-black border border-cyan-500/20 rounded-xl p-6 w-full overflow-hidden shadow-[0_0_15px_rgba(0,212,255,0.1)] transition-all duration-300';
       case 'list':
         return 'relative bg-gradient-to-br from-gray-900 to-black border border-cyan-500/20 rounded-xl p-6 w-full overflow-hidden shadow-[0_0_15px_rgba(0,212,255,0.1)] transition-all duration-300';
       default:
@@ -134,6 +149,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
     }
   };
 
+  
   const getImageClasses = () => {
     switch (layout) {
       case 'list':
@@ -146,7 +162,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
   return (
     <motion.div
       variants={cardVariants}
-      whileHover={layout !== 'list' ? "hover" : {}}
+      whileHover={layout !== 'list' ? 'hover' : {}}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -161,7 +177,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
               alt={profile.name}
               className={getImageClasses()}
             />
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
+            <div className="absolute W inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
           </div>
 
           <div className="flex-1 flex flex-col">
@@ -206,11 +222,15 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
               <h3 className="text-sm font-semibold text-cyan-400 mb-2 flex items-center">
                 <FaCode className="mr-2" size={12} /> Skills
               </h3>
-              <div className="relative bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-cyan-500/30 shadow-[0_0_20px_rgba(0,212,255,0.2)] overflow-hidden">
+              <div
+                className="relative bg-gray-800/50 backdrop-blur-sm p-3 rounded-lg border border-cyan-500/30 shadow-[0_0_20px_rgba(0,212,255,0.2)] overflow-hidden cursor-pointer"
+                onMouseEnter={() => setIsSkillsHovered(true)}
+                onMouseLeave={() => setIsSkillsHovered(false)}
+              >
                 <motion.div
                   className="flex space-x-3 whitespace-nowrap"
                   variants={skillVariants}
-                  animate="animate"
+                  animate={controls}
                 >
                   {profile.skills.length > 0 ? (
                     <>
@@ -246,42 +266,63 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
       ) : (
         <>
           {/* Default layout for grid and masonry */}
-          <div className="flex items-start space-x-5">
-            <div className="relative">
-              <img
-                src={profile.imageUrl || 'https://via.placeholder.com/150'}
-                alt={profile.name}
-                className={getImageClasses()}
-              />
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
-            </div>
-            <div className="flex-1">
-              <Link
-                to={`/profile/${profile._id}`}
-                className="text-3xl font-extrabold text-white hover:text-cyan-400 transition-colors duration-200 drop-shadow-[0_0_8px_rgba(0,212,255,0.4)]"
-              >
-                {profile.name}
-              </Link>
-              <p className="text-sm text-gray-300 flex items-center mt-2">
-                <FaMapMarkerAlt className="mr-2 text-cyan-400" size={16} />
-                {profile.location || 'Global Dev'}
-              </p>
-              <p className="text-sm text-gray-400 mt-2 italic line-clamp-2 leading-relaxed">
-                {profile.bio || 'No bio provided'}
-              </p>
-            </div>
-          </div>
+          {/* Default layout for grid and masonry */}
+<div className="flex items-start space-x-5">
+  <div className="relative">
+    <img
+      src={profile.imageUrl || 'https://via.placeholder.com/150'}
+      alt={profile.name}
+      className={getImageClasses()}
+    />
+    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
+  </div>
+  <div className="flex-1">
+    <div className="flex justify-between items-start">
+      <Link
+        to={`/profile/${profile._id}`}
+        className="text-3xl font-extrabold text-white hover:text-cyan-400 transition-colors duration-200 drop-shadow-[0_0_8px_rgba(0,212,255,0.4)]"
+      >
+        {profile.name}
+      </Link>
+      {/* Share Button for Grid/Masonry */}
+      <motion.button
+        onClick={handleNativeShare}
+        variants={buttonVariants}
+        whileHover="hover"
+        whileTap="tap"
+        className="bg-cyan-500/20 text-cyan-300 p-2 rounded-full border border-cyan-400/30"
+        title="Share Profile"
+      >
+        <FaShareAlt size={14} />
+      </motion.button>
+    </div>
+    <p className="text-sm text-gray-300 flex items-center mt-2">
+      <FaMapMarkerAlt className="mr-2 text-cyan-400" size={16} />
+      {profile.location || 'Global Dev'}
+    </p>
+    <div className="bg-cyan-500/20 text-cyan-300 text-xs px-3 py-1 rounded-full border border-cyan-400/30 inline-block mt-2">
+      {profile.views} Views
+    </div>
+    <p className="text-sm text-gray-400 mt-2 italic line-clamp-2 leading-relaxed">
+      {profile.bio || 'No bio provided'}
+    </p>
+  </div>
+</div>
 
           {/* Animated Skills Box */}
           <div className="mt-6 relative">
             <h3 className="text-xl font-semibold text-cyan-400 mb-3 flex items-center drop-shadow-[0_0_6px_rgba(0,212,255,0.3)]">
               <FaCode className="mr-2" /> Skills
             </h3>
-            <div className="relative bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-cyan-500/30 shadow-[0_0_20px_rgba(0,212,255,0.2)] overflow-hidden">
+            <div
+              className="relative bg-gray-800/50 backdrop-blur-sm p-4 rounded-lg border border-cyan-500/30 shadow-[0_0_20px_rgba(0,212,255,0.2)] overflow-hidden cursor-pointer"
+              onMouseEnter={() => setIsSkillsHovered(true)}
+              onMouseLeave={() => setIsSkillsHovered(false)}
+            >
               <motion.div
                 className="flex space-x-4 whitespace-nowrap"
                 variants={skillVariants}
-                animate="animate"
+                animate={controls}
               >
                 {profile.skills.length > 0 ? (
                   <>
@@ -409,8 +450,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
               className="flex items-center space-x-2 text-white py-2 px-3 rounded-md hover:bg-cyan-500/20"
               whileHover={{ scale: 1.05, backgroundColor: `${option.color}20` }}
             >
-              <span style={{ color: option.color }}>{option.icon}</span>
-              <span>{option.name}</span>
+              <span style={{ color: option.color }}>{option.icon}</span>            <span>{option.name}</span>
             </motion.a>
           ))}
         </motion.div>

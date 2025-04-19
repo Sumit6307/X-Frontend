@@ -469,7 +469,8 @@ function Home() {
                 </motion.button>
               </div>
               <p className="text-center text-gray-400 mt-4">
-                Page {currentPage} of {totalPages} | Showing {filteredProfiles.length} developers
+                Page {currentPage} of {totalPages} | 
+            {/* Showing {filteredProfiles.length} developers */}
               </p>
             </>
           ) : (
