@@ -1,4 +1,3 @@
-// src/pages/Roadmap.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
@@ -26,7 +25,8 @@ import {
   FaRobot,
   FaMobile,
   FaPaintBrush,
-  FaLaptopCode
+  FaLaptopCode,
+  FaArrowLeft
 } from 'react-icons/fa';
 import { 
   SiTypescript, 
@@ -49,12 +49,42 @@ import {
   SiVuedotjs,
   SiNextdotjs,
   SiSpring,
-  
   SiTerraform,
   SiCloudflare,
   SiDotnet
 } from 'react-icons/si';
 import { DiScrum } from 'react-icons/di';
+import { useNavigate } from 'react-router-dom';
+
+// Animation Variants for Back Button
+const backButtonVariants = {
+  hidden: { x: -50, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 12,
+      delay: 0.3,
+    },
+  },
+  hover: {
+    x: 5,
+    scale: 1.05,
+    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
+    backgroundColor: 'rgba(0, 212, 255, 0.3)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 15,
+    },
+  },
+  tap: {
+    scale: 0.9,
+    backgroundColor: 'rgba(0, 212, 255, 0.4)',
+  },
+};
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -697,6 +727,7 @@ const allCategories = [...new Set(allRoadmaps.map(item => item.category))];
 const popularRoadmaps = allRoadmaps.filter(roadmap => roadmap.isPopular);
 
 function Roadmap() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState('all');
   const [activeCategory, setActiveCategory] = useState('all');
@@ -725,6 +756,19 @@ function Roadmap() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden relative">
       <Navbar />
+      {/* Back Button */}
+      <motion.button
+        variants={backButtonVariants}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={() => navigate(-1) || navigate('/')}
+        className="fixed top-30 left-6 z-20 flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-black/80 border border-cyan-500/50 rounded-full text-cyan-400 font-semibold text-base md:text-lg shadow-[0_0_10px_rgba(0,212,255,0.3)] hover:text-purple-400 animate-[pulse_3s_infinite]"
+      >
+        <FaArrowLeft className="text-lg md:text-xl" /> Back
+      </motion.button>
+
       <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.1)_0%,transparent_70%)] -z-10" />
         

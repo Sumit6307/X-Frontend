@@ -1,9 +1,41 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaRobot, FaSearch, FaCode, FaPalette, FaBrain, FaChartLine, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaRobot, FaSearch, FaCode, FaPalette, FaBrain, FaChartLine, FaExternalLinkAlt, FaArrowLeft } from 'react-icons/fa';
 import { SiTensorflow, SiOpenai, SiHuggingface, SiGitlab, SiFigma, SiNotion } from 'react-icons/si';
+import { useNavigate } from 'react-router-dom';
+
+// Animation Variants for Back Button
+const backButtonVariants = {
+  hidden: { x: -50, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 12,
+      delay: 0.3,
+    },
+  },
+  hover: {
+    x: 5,
+    scale: 1.05,
+    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
+    backgroundColor: 'rgba(0, 212, 255, 0.3)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 15,
+    },
+  },
+  tap: {
+    scale: 0.9,
+    backgroundColor: 'rgba(0, 212, 255, 0.4)',
+  },
+};
 
 const AiToolsHub = () => {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -122,6 +154,19 @@ const AiToolsHub = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white p-6">
+      {/* Back Button */}
+      <motion.button
+        variants={backButtonVariants}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={() => navigate(-1) || navigate('/')}
+        className="fixed top-30 left-6 z-20 flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-black/80 border border-cyan-500/50 rounded-full text-cyan-400 font-semibold text-base md:text-lg shadow-[0_0_10px_rgba(0,212,255,0.3)] hover:text-purple-400 animate-[pulse_3s_infinite]"
+      >
+        <FaArrowLeft className="text-lg md:text-xl" /> Back
+      </motion.button>
+
       <motion.div 
         initial={{ opacity: 0 }} 
         animate={{ opacity: 1 }} 

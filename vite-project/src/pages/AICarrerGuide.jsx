@@ -1,9 +1,38 @@
-// src/pages/AICareerGuide.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
-import { FaRobot, FaChartLine, FaUniversity, FaBriefcase, FaSearch, FaArrowRight, FaStar, FaLinkedin, FaGithub } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaRobot, FaChartLine, FaUniversity, FaBriefcase, FaSearch, FaArrowRight, FaStar, FaLinkedin, FaGithub, FaArrowLeft } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+
+// Animation Variants for Back Button
+const backButtonVariants = {
+  hidden: { x: -50, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 12,
+      delay: 0.3,
+    },
+  },
+  hover: {
+    x: 5,
+    scale: 1.05,
+    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
+    backgroundColor: 'rgba(0, 212, 255, 0.3)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 15,
+    },
+  },
+  tap: {
+    scale: 0.9,
+    backgroundColor: 'rgba(0, 212, 255, 0.4)',
+  },
+};
 
 const containerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -32,6 +61,7 @@ const cardVariants = {
 };
 
 function AICareerGuide() {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     skills: '',
     interests: '',
@@ -175,6 +205,19 @@ function AICareerGuide() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden relative">
       <Navbar />
+      {/* Back Button */}
+      <motion.button
+        variants={backButtonVariants}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={() => navigate(-1) || navigate('/')}
+        className="fixed top-30 left-6 z-20 flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-black/80 border border-cyan-500/50 rounded-full text-cyan-400 font-semibold text-base md:text-lg shadow-[0_0_10px_rgba(0,212,255,0.3)] hover:text-purple-400 animate-[pulse_3s_infinite]"
+      >
+        <FaArrowLeft className="text-lg md:text-xl" /> Back
+      </motion.button>
+
       <div className="pt-24 pb-12 px-4">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.1)_0%,transparent_70%)] -z-10" />
         
@@ -574,14 +617,14 @@ function AICareerGuide() {
             variants={itemVariants}
             className="bg-gradient-to-r from-purple-500/10 via-cyan-500/10 to-purple-500/10 rounded-2xl p-8 border border-cyan-500/30 text-center"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Launch Your AI Career?</h2>
+            <h2 classславName="text-3xl font-bold text-white mb-4">Ready to Launch Your AI Career?</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-6">
               Join our AI Career Accelerator program and get 1:1 mentorship, project experience, and job placement support.
             </p>
             <Link to="https://topmate.io/a_boy_called_sumit">
-            <button  className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold py-3 px-8 rounded-full transition-colors">
-              Apply Now
-            </button>
+              <button className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-bold py-3 px-8 rounded-full transition-colors">
+                Apply Now
+              </button>
             </Link>
           </motion.div>
         </motion.div>

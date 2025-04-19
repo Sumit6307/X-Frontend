@@ -3,13 +3,43 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaEdit, FaCode, FaExternalLinkAlt, FaLock } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaEdit, FaCode, FaExternalLinkAlt, FaLock, FaArrowLeft } from 'react-icons/fa';
 
 const containerVariants = { hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } } };
 const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } };
 const projectVariants = { hidden: { opacity: 0, y: 30 }, visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.2, duration: 0.6 } }), hover: { scale: 1.03, boxShadow: '0 0 25px rgba(0, 212, 255, 0.4)' } };
 const inputVariants = { focus: { scale: 1.02, borderColor: '#00D4FF', transition: { duration: 0.2 } } };
 const buttonVariants = { hover: { scale: 1.05, boxShadow: '0 0 15px rgba(0, 212, 255, 0.5)' }, tap: { scale: 0.95 } };
+
+// Animation Variants for Back Button
+const backButtonVariants = {
+  hidden: { x: -50, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 12,
+      delay: 0.3,
+    },
+  },
+  hover: {
+    x: 5,
+    scale: 1.05,
+    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
+    backgroundColor: 'rgba(0, 212, 255, 0.3)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 15,
+    },
+  },
+  tap: {
+    scale: 0.9,
+    backgroundColor: 'rgba(0, 212, 255, 0.4)',
+  },
+};
 
 function Profile() {
   const { id } = useParams();
@@ -23,46 +53,44 @@ function Profile() {
   const [isCurrentUser, setIsCurrentUser] = useState(false);
 
   useEffect(() => {
-    // Update the fetchProfile function in Profile.jsx
-const fetchProfile = async () => {
-  try {
-    setLoading(true);
-    const token = localStorage.getItem('authToken');
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
-    
-    const response = await axios.get(`https://x-backend-1-zhox.onrender.com/api/profiles/${id}`, { headers });
-    setProfileData(response.data);
-    
-    if (token) {
+    const fetchProfile = async () => {
       try {
-        const meResponse = await axios.get('https://x-backend-1-zhox.onrender.com/api/profiles/me', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setIsCurrentUser(meResponse.data.userId === id);
-      } catch (meError) {
-        console.log('Not logged in or token expired');
-        setIsCurrentUser(false);
+        setLoading(true);
+        const token = localStorage.getItem('authToken');
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        
+        const response = await axios.get(`https://x-backend-1-zhox.onrender.com/api/profiles/${id}`, { headers });
+        setProfileData(response.data);
+        
+        if (token) {
+          try {
+            const meResponse = await axios.get('https://x-backend-1-zhox.onrender.com/api/profiles/me', {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            setIsCurrentUser(meResponse.data.userId === id);
+          } catch (meError) {
+            console.log('Not logged in or token expired');
+            setIsCurrentUser(false);
+          }
+        }
+      } catch (error) {
+        console.error('Fetch Error:', error);
+        if (error.response?.status === 401) {
+          localStorage.removeItem('authToken');
+          setProfileData({ 
+            error: 'Please login again',
+            ...(error.response?.data || {})
+          });
+        } else {
+          setProfileData({ 
+            error: 'Failed to load profile',
+            details: error.message
+          });
+        }
+      } finally {
+        setLoading(false);
       }
-    }
-  } catch (error) {
-    console.error('Fetch Error:', error);
-    if (error.response?.status === 401) {
-      // Handle unauthorized (likely token expired)
-      localStorage.removeItem('authToken');
-      setProfileData({ 
-        error: 'Please login again',
-        ...(error.response?.data || {})
-      });
-    } else {
-      setProfileData({ 
-        error: 'Failed to load profile',
-        details: error.message
-      });
-    }
-  } finally {
-    setLoading(false);
-  }
-};
+    };
     fetchProfile();
   }, [id]);
 
@@ -129,6 +157,19 @@ const fetchProfile = async () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden relative">
       <Navbar />
+      {/* Back Button */}
+      <motion.button
+        variants={backButtonVariants}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={() => navigate(-1) || navigate('/')}
+        className="fixed top-30 left-6 z-20 flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-black/80 border border-cyan-500/50 rounded-full text-cyan-400 font-semibold text-base md:text-lg shadow-[0_0_10px_rgba(0,212,255,0.3)] hover:text-purple-400 animate-[pulse_3s_infinite]"
+      >
+        <FaArrowLeft className="text-lg md:text-xl" /> Back
+      </motion.button>
+
       <div className="pt-20 px-4">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.1)_0%,transparent_70%)] -z-10" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500/50 to-purple-500/50" />
@@ -174,7 +215,6 @@ const fetchProfile = async () => {
               )}
             </div>
           </div>
-
 
           <motion.div variants={itemVariants} className="mt-12">
             <h2 className="text-3xl font-bold text-cyan-400 mb-6 flex items-center"><FaCode className="mr-2" /> Projects</h2>

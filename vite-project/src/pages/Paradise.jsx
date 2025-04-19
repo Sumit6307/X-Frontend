@@ -1,12 +1,41 @@
-// src/pages/Paradise.jsx
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Globe from 'react-globe.gl';
 import Navbar from '../components/Navbar';
-import { FaRocket, FaCode, FaGlobe, FaStar, FaFileAlt, FaBrain, FaLightbulb, FaTrophy, FaHandshake, FaChartLine, FaRobot,FaMapMarkedAlt } from 'react-icons/fa';
+import { FaRocket, FaCode, FaGlobe, FaStar, FaFileAlt, FaBrain, FaLightbulb, FaChartLine, FaRobot, FaMapMarkedAlt, FaArrowLeft } from 'react-icons/fa';
 
-// Animation Variants
+// Animation Variants for Back Button
+const backButtonVariants = {
+  hidden: { x: -50, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 12,
+      delay: 0.3,
+    },
+  },
+  hover: {
+    x: 5,
+    scale: 1.05,
+    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
+    backgroundColor: 'rgba(0, 212, 255, 0.3)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 15,
+    },
+  },
+  tap: {
+    scale: 0.9,
+    backgroundColor: 'rgba(0, 212, 255, 0.4)',
+  },
+};
+
+// Other Animation Variants
 const sectionVariants = {
   hidden: { opacity: 0, y: 50 },
   visible: { opacity: 1, y: 0, transition: { duration: 1, ease: 'easeOut' } },
@@ -31,6 +60,8 @@ const wordVariants = {
 };
 
 function Paradise() {
+  const navigate = useNavigate();
+
   // GravityX Integration Points Worldwide
   const pointsData = [
     { lat: 40.7128, lng: -74.0060, label: 'New York', size: 0.8 },
@@ -54,6 +85,19 @@ function Paradise() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white overflow-hidden relative">
       <Navbar />
+      {/* Back Button */}
+      <motion.button
+        variants={backButtonVariants}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={() => navigate(-1)}
+        className="fixed top-30 left-6 z-20 flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-black/80 border border-cyan-500/50 rounded-full text-cyan-400 font-semibold text-base md:text-lg shadow-[0_0_10px_rgba(0,212,255,0.3)] hover:text-purple-400 animate-[pulse_3s_infinite]"
+      >
+        <FaArrowLeft className="text-lg md:text-xl" /> Back
+      </motion.button>
+
       <div className="pt-24 pb-12">
         {/* Background Effects */}
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.3)_0%,transparent_70%)] -z-10" />
@@ -153,14 +197,14 @@ function Paradise() {
             labelSize={0.7}
             labelDotRadius={0.5}
             autoRotate={true}
-            autoRotateSpeed={1.5} // Faster rotation
+            autoRotateSpeed={1.5}
             arcsData={arcsData}
             arcColor="color"
             arcDashLength={0.9}
             arcDashGap={4}
             arcDashAnimateTime={1500}
             arcStroke={0.5}
-            ringsData={pointsData} // Orbit ring effect
+            ringsData={pointsData}
             ringColor={() => '#00d4ff'}
             ringMaxRadius={4}
             ringPropagationSpeed={3}
@@ -182,10 +226,10 @@ function Paradise() {
           className="container mx-auto py-24 px-6"
         >
           <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)]">
-          Dive into GravityX
+            Dive into GravityX
           </h2>
           <p className="text-2xl md:text-3xl text-gray-300 text-center mb-20 max-w-3xl mx-auto">
-          Everything a developer dreams of—unlocked in one cosmic hub.
+            Everything a developer dreams of—unlocked in one cosmic hub.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 max-w-5xl mx-auto">
             {[
@@ -194,65 +238,64 @@ function Paradise() {
                 icon: <FaRocket />,
                 desc: 'Unlock a universe of career paths, internships, and learning programs tailored for developers across the globe.',
                 extra: 'Join exclusive bootcamps, hackathons, and job boards.',
-                path: '/opportunities'
+                path: '/opportunities',
               },
               {
                 title: 'Resources',
                 icon: <FaCode />,
                 desc: 'Access a galaxy of cutting-edge tools, libraries, APIs, and tutorials to supercharge your skills.',
                 extra: 'From free courses to premium software—find it all.',
-                path: '/resources'
+                path: '/resources',
               },
               {
                 title: 'Project Showcase',
                 icon: <FaGlobe />,
                 desc: 'Display your masterpieces, gain feedback from a global community, and spark collaboration.',
                 extra: 'Feature your GitHub repos and live demos.',
-                path: '/project-showcase'
+                path: '/project-showcase',
               },
               {
                 title: 'Portfolio Ideas',
                 icon: <FaStar />,
                 desc: 'Ignite your creativity with bold, innovative ideas to craft portfolios that leave a mark.',
                 extra: 'Templates, inspirations, and design tips included.',
-                path: '/portfolio-ideas'
+                path: '/portfolio-ideas',
               },
               {
                 title: 'Resume Building',
                 icon: <FaFileAlt />,
                 desc: 'Craft stellar resumes with expert tips and templates designed for tech careers.',
                 extra: 'Optimize for ATS and impress recruiters.',
-                path: '/resume-building'
+                path: '/resume-building',
               },
               {
                 title: 'AI Tools Hub',
                 icon: <FaBrain />,
                 desc: 'Explore a constellation of AI-powered tools to innovate and accelerate your projects.',
                 extra: 'Code assistants, design AI, and more.',
-                path: '/ai-tools-hub'
+                path: '/ai-tools-hub',
               },
               {
                 title: 'Industry Trends',
                 icon: <FaChartLine />,
                 desc: 'Share regular articles and videos on industry trends, expert insights, and career advice to keep engaged.',
                 extra: 'Stay ahead with the latest tech developments and market shifts.',
-                path: '/industry-trends'
+                path: '/industry-trends',
               },
               {
                 title: 'AI Career Guide',
                 icon: <FaRobot />,
                 desc: 'Get AI-powered career recommendations tailored to your skills, interests, and goals.',
                 extra: 'Personalized roadmap for your dream tech career.',
-                path: '/ai-career-guide'
+                path: '/ai-career-guide',
               },
               {
                 title: 'Developer Roadmaps',
-                icon: <FaMapMarkedAlt />, // Make sure to import this icon
+                icon: <FaMapMarkedAlt />,
                 desc: 'Step-by-step guides to becoming a modern developer in any tech domain.',
                 extra: 'Curated paths from roadmap.sh with direct links to each technology.',
-                path: '/roadmaps' // This will link to your new Roadmap.jsx page
-              }
-
+                path: '/roadmaps',
+              },
             ].map((item, idx) => (
               <motion.div
                 key={idx}
@@ -270,7 +313,7 @@ function Paradise() {
                   <h3 className="text-3xl font-bold text-cyan-300 text-center mb-4">{item.title}</h3>
                   <p className="text-gray-200 text-lg mb-4 text-center">{item.desc}</p>
                   <p className="text-gray-400 text-sm italic text-center mb-6">{item.extra}</p>
-                  <Link 
+                  <Link
                     to={item.path}
                     className="block text-center text-cyan-400 hover:text-purple-400 font-semibold text-lg"
                   >
@@ -411,11 +454,11 @@ function Paradise() {
               className="flex gap-20 items-center"
             >
               {[
-                'https://logos-world.net/wp-content/uploads/2020/12/Microsoft-Logo.png', // Microsoft
-                'https://www.cloudflare.com/static/77a2e6c8bc155da49133e2379e8f4d9b/cloudflare-logo.png', // Cloudflare
-                'https://assets.vercel.com/image/upload/v1663738468/front/nextjs/Vercel-logotype-dark.png', // Vercel
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/ISO_Logo_%282016%29.svg/1200px-ISO_Logo_%282016%29.svg.png', // ISO
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/GitHub_Logo.svg/1200px-GitHub_Logo.svg.png', // GitHub
+                'https://logos-world.net/wp-content/uploads/2020/12/Microsoft-Logo.png',
+                'https://www.cloudflare.com/static/77a2e6c8bc155da49133e2379e8f4d9b/cloudflare-logo.png',
+                'https://assets.vercel.com/image/upload/v1663738468/front/nextjs/Vercel-logotype-dark.png',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/ISO_Logo_%282016%29.svg/1200px-ISO_Logo_%282016%29.svg.png',
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/GitHub_Logo.svg/1200px-GitHub_Logo.svg.png',
               ].map((src, idx) => (
                 <motion.div
                   key={idx}

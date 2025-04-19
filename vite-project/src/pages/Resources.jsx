@@ -1,12 +1,43 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaCode, FaBook, FaVideo, FaTools, FaLaptopCode, FaGraduationCap } from 'react-icons/fa';
+import { FaCode, FaBook, FaVideo, FaTools, FaLaptopCode, FaGraduationCap, FaArrowLeft } from 'react-icons/fa';
 import { SiJavascript, SiReact, SiPython, SiNodedotjs } from 'react-icons/si';
 import { IoMdSearch } from 'react-icons/io';
 import { RiMentalHealthLine } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+// Animation Variants for Back Button
+const backButtonVariants = {
+  hidden: { x: -50, opacity: 0 },
+  visible: {
+    x: 0,
+    opacity: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 12,
+      delay: 0.3,
+    },
+  },
+  hover: {
+    x: 5,
+    scale: 1.05,
+    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
+    backgroundColor: 'rgba(0, 212, 255, 0.3)',
+    transition: {
+      type: 'spring',
+      stiffness: 300,
+      damping: 15,
+    },
+  },
+  tap: {
+    scale: 0.9,
+    backgroundColor: 'rgba(0, 212, 255, 0.4)',
+  },
+};
 
 const Resources = () => {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -118,6 +149,19 @@ const Resources = () => {
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10" />
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/10 via-purple-900/10 to-cyan-900/10" />
       </div>
+
+      {/* Back Button */}
+      <motion.button
+        variants={backButtonVariants}
+        initial="hidden"
+        animate="visible"
+        whileHover="hover"
+        whileTap="tap"
+        onClick={() => navigate(-1) || navigate('/')}
+        className="fixed top-30 left-6 z-20 flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-black/80 border border-cyan-500/50 rounded-full text-cyan-400 font-semibold text-base md:text-lg shadow-[0_0_10px_rgba(0,212,255,0.3)] hover:text-purple-400 animate-[pulse_3s_infinite]"
+      >
+        <FaArrowLeft className="text-lg md:text-xl" /> Back
+      </motion.button>
 
       <div className="container mx-auto px-6 py-24 relative z-10">
         {/* Hero Section */}
@@ -324,23 +368,23 @@ const Resources = () => {
               Contribute to our cosmic collection and help fellow developers level up their skills
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link to="/add-profile">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold shadow-lg"
-              >
-                Submit a Resource
-              </motion.button>
+              <Link to="/add-profile">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-full font-semibold shadow-lg"
+                >
+                  Submit a Resource
+                </motion.button>
               </Link>
-              <Link to="https://enhancv.com/blog/submitting-a-resume/" target='_blank'>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-transparent border border-cyan-400 rounded-full font-semibold"
-              >
-                View Submission Guidelines
-              </motion.button>
+              <Link to="https://enhancv.com/blog/submitting-a-resume/" target="_blank">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-4 bg-transparent border border-cyan-400 rounded-full font-semibold"
+                >
+                  View Submission Guidelines
+                </motion.button>
               </Link>
             </div>
           </div>
