@@ -22,9 +22,9 @@ const navItemVariants = {
 
 const devButtonVariants = {
   hover: {
-    scale: 1.1,
-    boxShadow: '0 0 25px rgba(0, 212, 255, 0.7)',
-    textShadow: '0 0 10px rgba(0, 212, 255, 0.8)',
+    scale: 1.15,
+    boxShadow: '0 0 30px rgba(0, 212, 255, 0.9), 0 0 60px rgba(0, 212, 255, 0.5)',
+    textShadow: '0 0 15px rgba(0, 212, 255, 1)',
     transition: {
       duration: 0.3,
       repeat: Infinity,
@@ -33,7 +33,7 @@ const devButtonVariants = {
     }
   },
   tap: {
-    scale: 0.95,
+    scale: 0.9,
     transition: { duration: 0.1 }
   }
 };
@@ -78,6 +78,155 @@ const containerVariants = {
   }
 };
 
+// Enhanced DevHubButton Component
+const DevHubButton = ({ isDevContainerOpen, setIsDevContainerOpen, toggleDevContainer, isMobile = false }) => {
+  const [timeBasedGlow, setTimeBasedGlow] = useState(0);
+
+  // Time-based animation for pulsating effects
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeBasedGlow((prev) => (prev + 0.08) % 1);
+    }, 20);
+    return () => clearInterval(interval);
+  }, []);
+
+  const glowIntensity = [
+    `0 0 ${25 + 25 * Math.sin(timeBasedGlow * Math.PI)}px rgba(0, 212, 255, ${0.7 + 0.3 * Math.sin(timeBasedGlow * Math.PI)})`,
+    `0 0 ${50 + 30 * Math.sin(timeBasedGlow * Math.PI)}px rgba(147, 51, 234, ${0.5 + 0.2 * Math.sin(timeBasedGlow * Math.PI)})`,
+  ].join(', ');
+
+  return (
+    <motion.button
+      onClick={toggleDevContainer}
+      onMouseEnter={() => !isMobile && setIsDevContainerOpen(true)}
+      onMouseLeave={() => !isMobile && !isDevContainerOpen && setIsDevContainerOpen(false)}
+      variants={devButtonVariants}
+      whileHover="hover"
+      whileTap="tap"
+      animate={{
+        boxShadow: isDevContainerOpen
+          ? [glowIntensity, `0 0 80px rgba(0, 212, 255, 0.9), 0 0 120px rgba(147, 51, 234, 0.6)`]
+          : glowIntensity,
+        scale: isDevContainerOpen ? 1.2 : 1,
+        backgroundColor: isDevContainerOpen ? 'rgba(0, 212, 255, 0.6)' : 'rgba(0, 212, 255, 0.4)',
+        y: [0, -2, 0, 2, 0], // Subtle vibration effect
+      }}
+      transition={{
+        boxShadow: { duration: 0.5, repeat: Infinity, repeatType: 'mirror' },
+        scale: { duration: 0.3 },
+        backgroundColor: { duration: 0.4 },
+        y: { duration: 1.5, repeat: Infinity, ease: 'easeInOut' },
+      }}
+      className={`relative flex items-center justify-between text-xl font-extrabold ${
+        isMobile ? 'w-full text-left py-4 px-5 rounded-xl' : 'px-8 py-3 rounded-full'
+      } ${isDevContainerOpen ? 'text-white' : 'text-neonBlue'} ${
+        isMobile ? 'bg-neonBlue/25 hover:bg-neonBlue/40' : 'bg-neonBlue/40 border-2 border-neonBlue/90'
+      } transition-all duration-300 overflow-hidden group shadow-[0_0_20px_rgba(0,212,255,0.7)]`}
+    >
+      {/* Prismatic Gradient Overlay */}
+      <span
+        className="absolute inset-0 bg-gradient-to-r from-neonBlue/60 via-purple-500/50 to-pink-500/40 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
+        style={{
+          backgroundPosition: `${200 * timeBasedGlow}%`,
+          animation: 'prismFlow 3s linear infinite',
+        }}
+      />
+
+      {/* Lens Flare Effect */}
+      <span
+        className="absolute inset-0 opacity-20 group-hover:opacity-50 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(circle at ${50 + 30 * Math.sin(timeBasedGlow * Math.PI)}% ${50 + 30 * Math.cos(timeBasedGlow * Math.PI)}%, rgba(255, 255, 255, 0.5), transparent 70%)`,
+        }}
+      />
+
+      {/* Orbiting Sparkle Particles */}
+      <span className="absolute inset-0 pointer-events-none">
+        {[...Array(8)].map((_, i) => (
+          <motion.span
+            key={i}
+            className="absolute w-2 h-2 bg-gradient-to-b from-neonBlue to-purple-500 rounded-full"
+            initial={{
+              x: `${Math.cos((i * 45 * Math.PI) / 180) * 40}%`,
+              y: `${Math.sin((i * 45 * Math.PI) / 180) * 40}%`,
+              opacity: 0,
+            }}
+            animate={{
+              x: `${Math.cos(((i * 45 + timeBasedGlow * 360) * Math.PI) / 180) * 40}%`,
+              y: `${Math.sin(((i * 45 + timeBasedGlow * 360) * Math.PI) / 180) * 40}%`,
+              opacity: [0, 1, 0],
+              scale: [0, 1.5, 0],
+            }}
+            transition={{
+              duration: 1.8 + Math.random() * 0.7,
+              repeat: Infinity,
+              delay: i * 0.15,
+            }}
+          />
+        ))}
+      </span>
+
+      {/* Starburst Effect */}
+      <span className="absolute inset-0 pointer-events-none">
+        {[...Array(3)].map((_, i) => (
+          <motion.span
+            key={i}
+            className="absolute w-3 h-3 bg-white rounded-full"
+            initial={{
+              x: '50%',
+              y: '50%',
+              opacity: 0,
+            }}
+            animate={{
+              x: `${50 + Math.cos((i * 120 + timeBasedGlow * 360) * Math.PI / 180) * 60}%`,
+              y: `${50 + Math.sin((i * 120 + timeBasedGlow * 360) * Math.PI / 180) * 60}%`,
+              opacity: [0, 0.6, 0],
+              scale: [0, 2, 0],
+            }}
+            transition={{
+              duration: 2 + Math.random() * 0.5,
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+          />
+        ))}
+      </span>
+
+      {/* Icon and Text */}
+      <span className="flex items-center relative z-10">
+        <motion.span
+          animate={{ rotate: isDevContainerOpen ? 360 : 0, scale: isDevContainerOpen ? 1.3 : 1 }}
+          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          className="inline-block mr-3"
+        >
+          <FaCode className="text-2xl" />
+        </motion.span>
+        <span className="tracking-wider">Dev Hub</span>
+      </span>
+
+      {/* Chevron for Mobile */}
+      {isMobile && (
+        <motion.span
+          animate={{ rotate: isDevContainerOpen ? 90 : 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <FaChevronRight className="text-lg" />
+        </motion.span>
+      )}
+
+      {/* Underline Glow Effect */}
+      {isDevContainerOpen && (
+        <motion.span
+          initial={{ width: 0 }}
+          animate={{ width: '100%' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="absolute bottom-0 left-0 h-1.5 bg-gradient-to-r from-neonBlue via-purple-500 to-pink-500 rounded-full shadow-[0_0_10px_rgba(0,212,255,0.8)]"
+        />
+      )}
+    </motion.button>
+  );
+};
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDevContainerOpen, setIsDevContainerOpen] = useState(false);
@@ -103,54 +252,63 @@ function Navbar() {
     navigate('/login');
   };
 
-  // Updated developer menu sections with all requested items
   const developerMenuSections = [
     {
       title: 'Career Development',
       icon: '🚀',
       items: [
-        { name: 'Job Board', path: '/paradise/job-board', icon: '💼' },
-        { name: 'Internships', path: '/paradise/internships', icon: '👔' },
-        { name: 'Bootcamps', path: '/paradise/bootcamps', icon: '⚡' },
-        { name: 'Hackathons', path: '/paradise/hackathons', icon: '👾' },
-        { name: 'Mentorship', path: '/paradise/mentorship', icon: '🧙' },
-        { name: 'Remote Work', path: '/paradise/remote-work', icon: '🌍' }
+        { name: 'Job Board', path: '/opportunities', icon: '💼' },
+        { name: 'Internships', path: '/opportunities', icon: '👔' },
+        { name: 'Bootcamps', path: '/opportunities', icon: '⚡' },
+        { name: 'Hackathons', path: '/opportunities', icon: '👾' },
+        { name: 'Mentorship', path: '/opportunities', icon: '🧙' },
+        { name: 'Remote Work', path: '/opportunities', icon: '🌍' },
+        { name: 'Roadmaps', path: '/roadmaps', icon: '🗺️' },
+        { name: 'Certifications', path: '/paradise/certifications', icon: '🏅' }
+
       ]
     },
     {
       title: 'Learning Resources',
       icon: '📚',
       items: [
-        { name: 'All Resources', path: '/paradise/all-resources', icon: '📂' },
-        { name: 'Courses', path: '/paradise/courses', icon: '🎓' },
-        { name: 'Tutorials', path: '/paradise/tutorials', icon: '📝' },
-        { name: 'Documentation', path: '/paradise/documentation', icon: '📖' },
-        { name: 'Dev Tools', path: '/paradise/dev-tools', icon: '🛠️' },
-        { name: 'Dev Wellness', path: '/paradise/dev-wellness', icon: '🧠' }
+        { name: 'All Resources', path: '/resources', icon: '📂' },
+        { name: 'Courses', path: '/resources', icon: '🎓' },
+        { name: 'Notes', path: '/paradise/notes', icon: '📝' },
+        { name: 'Tutorials', path: '/resources', icon: '📝' },
+        { name: 'Documentation', path: '/resources', icon: '📖' },
+        { name: 'Dev Tools', path: '/resources', icon: '🛠️' },
+        { name: 'Dev Wellness', path: '/resources', icon: '🧠' },
+        { name: 'Best Colleges', path: '/paradise/best-colleges', icon: '🏛️' },
+
       ]
     },
     {
       title: 'Productivity Tools',
       icon: '⚙️',
       items: [
-        { name: 'Games', path: '/paradise/games', icon: '🎮' },
-        { name: 'Resume Builder', path: '/paradise/resume-builder', icon: '📄' },
-        { name: 'All Tools', path: '/paradise/all-tools', icon: '🧰' },
-        { name: 'Code Assistants', path: '/paradise/code-assistants', icon: '🤖' },
-        { name: 'Design AI', path: '/paradise/design-ai', icon: '🎨' },
-        { name: 'Productivity', path: '/paradise/productivity', icon: '⏱️' }
+        { name: 'Games', path: '/project-showcase', icon: '🎮' },
+        { name: 'Resume Builder', path: '/resume-building', icon: '📄' },
+        { name: 'All Tools', path: '/ai-tools-hub', icon: '🧰' },
+        { name: 'Code Assistants', path: '/ai-tools-hub', icon: '🤖' },
+        { name: 'Productivity', path: '/ai-tools-hub', icon: '⏱️' },
+        { name: 'Dev Tools', path: '/resources', icon: '🔧' },
+        { name: 'Libraries', path: '/paradise/libraries', icon: '📦' },
+        { name: 'Valuable Repo', path: '/paradise/valuable-repo', icon: '💎' },
       ]
     },
     {
       title: 'Data & Trends',
       icon: '📊',
       items: [
-        { name: 'Data & Analytics', path: '/paradise/data-analytics', icon: '🔢' },
-        { name: 'Industry Trends', path: '/paradise/industry-trends', icon: '📈' },
-        { name: 'AI Career Guide', path: '/paradise/ai-career-guide', icon: '🧭' },
+        { name: 'Data & Analytics', path: '/ai-tools-hub', icon: '🔢' },
+        { name: 'Industry Trends', path: '/industry-trends', icon: '📈' },
+        { name: 'AI Career Guide', path: '/ai-career-guide', icon: '🧭' },
         { name: 'Research Papers', path: '/paradise/research-papers', icon: '📜' },
         { name: 'Useful APIs', path: '/paradise/useful-apis', icon: '🔌' },
-        { name: 'Open Source', path: '/paradise/open-source', icon: '🌐' }
+        { name: 'Open Source', path: '/paradise/open-source', icon: '🌐' },
+        { name: 'Design AI', path: '/ai-tools-hub', icon: '🎨' },
+
       ]
     }
   ];
@@ -171,62 +329,14 @@ function Navbar() {
         </motion.div>
 
         <div className="hidden md:flex space-x-8 items-center">
-          <NavLink to="/" className={({ isActive }) => `flex items-center text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'}`}>
-            <motion.div variants={navItemVariants} whileHover="hover" className="flex items-center">
-              <FaHome className="mr-2" /> Home
-            </motion.div>
-          </NavLink>
-
-          <NavLink to="/paradise" className={({ isActive }) => `flex items-center text-lg font-semibold ${isActive ? 'text-white-400' : 'text-white-300'}`}>
-            <motion.div variants={navItemVariants} whileHover="hover" className="flex items-center">
-              <FaUmbrellaBeach className="mr-2" /> Paradise
-            </motion.div>
-          </NavLink>
-
-          {/* Enhanced Developers Button - Desktop */}
+          {/* Enhanced Dev Hub Button - Desktop (Positioned before Home) */}
           {location.pathname.startsWith('/paradise') && (
             <div className="relative">
-              <motion.button
-                onMouseEnter={() => setIsDevContainerOpen(true)}
-                onMouseLeave={() => !isDevContainerOpen && setIsDevContainerOpen(false)}
-                onClick={toggleDevContainer}
-                variants={devButtonVariants}
-                whileHover="hover"
-                whileTap="tap"
-                animate={{
-                  boxShadow: isDevContainerOpen 
-                    ? ['0 0 15px rgba(0, 212, 255, 0.5)', '0 0 30px rgba(0, 212, 255, 0.8)'] 
-                    : '0 0 15px rgba(0, 212, 255, 0.5)',
-                  scale: isDevContainerOpen ? 1.1 : 1,
-                  backgroundColor: isDevContainerOpen ? 'rgba(0, 212, 255, 0.3)' : 'rgba(0, 212, 255, 0.2)'
-                }}
-                transition={{
-                  boxShadow: { duration: 0.5, repeat: isDevContainerOpen ? Infinity : 0, repeatType: 'mirror' },
-                  scale: { duration: 0.2 },
-                  backgroundColor: { duration: 0.3 }
-                }}
-                className={`flex items-center text-lg font-semibold ${
-                  isDevContainerOpen ? 'text-white' : 'text-neonBlue'
-                } bg-neonBlue/20 border-2 border-neonBlue/70 rounded-full px-6 py-2 shadow-[0_0_15px_rgba(0,212,255,0.5)] hover:shadow-[0_0_25px_rgba(0,212,255,0.7)] transition-all duration-300 relative overflow-hidden`}
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-neonBlue/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                <motion.span 
-                  animate={{ rotate: isDevContainerOpen ? 360 : 0 }}
-                  transition={{ duration: 0.5 }}
-                  className="inline-block mr-2"
-                >
-                  <FaCode className="text-xl" />
-                </motion.span>
-                <span className="relative z-10">Dev Hub</span>
-                {isDevContainerOpen && (
-                  <motion.span 
-                    initial={{ width: 0 }}
-                    animate={{ width: '100%' }}
-                    transition={{ duration: 0.3, delay: 0.1 }}
-                    className="absolute bottom-0 left-0 h-0.5 bg-neonBlue rounded-full"
-                  />
-                )}
-              </motion.button>
+              <DevHubButton
+                isDevContainerOpen={isDevContainerOpen}
+                setIsDevContainerOpen={setIsDevContainerOpen}
+                toggleDevContainer={toggleDevContainer}
+              />
               
               {isDevContainerOpen && (
                 <motion.div
@@ -307,7 +417,6 @@ function Navbar() {
                       ))}
                     </div>
                     
-                    {/* Quick Links Footer */}
                     <motion.div 
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -318,24 +427,28 @@ function Navbar() {
                         <NavLink 
                           to="/paradise/trending" 
                           className="px-3 py-1.5 text-xs font-medium bg-neonBlue/10 text-neonBlue rounded-full hover:bg-neonBlue/20 transition-colors"
+                          onClick={() => setIsDevContainerOpen(false)}
                         >
                           🔥 Trending
                         </NavLink>
                         <NavLink 
                           to="/paradise/new" 
                           className="px-3 py-1.5 text-xs font-medium bg-green-500/10 text-green-400 rounded-full hover:bg-green-500/20 transition-colors"
+                          onClick={() => setIsDevContainerOpen(false)}
                         >
                           🆕 New
                         </NavLink>
                         <NavLink 
                           to="/paradise/ai-tools" 
                           className="px-3 py-1.5 text-xs font-medium bg-purple-500/10 text-purple-400 rounded-full hover:bg-purple-500/20 transition-colors"
+                          onClick={() => setIsDevContainerOpen(false)}
                         >
                           🤖 AI Tools
                         </NavLink>
                         <NavLink 
                           to="/paradise/community" 
                           className="px-3 py-1.5 text-xs font-medium bg-amber-500/10 text-amber-400 rounded-full hover:bg-amber-500/20 transition-colors"
+                          onClick={() => setIsDevContainerOpen(false)}
                         >
                           👥 Community
                         </NavLink>
@@ -346,6 +459,18 @@ function Navbar() {
               )}
             </div>
           )}
+
+          <NavLink to="/" className={({ isActive }) => `flex items-center text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'}`}>
+            <motion.div variants={navItemVariants} whileHover="hover" className="flex items-center">
+              <FaHome className="mr-2 ml-37" /> Home
+            </motion.div>
+          </NavLink>
+
+          <NavLink to="/paradise" className={({ isActive }) => `flex items-center text-lg font-semibold ${isActive ? 'text-white-400' : 'text-white-300'}`}>
+            <motion.div variants={navItemVariants} whileHover="hover" className="flex items-center">
+              <FaUmbrellaBeach className="mr-2" /> Paradise
+            </motion.div>
+          </NavLink>
 
           {userProfile ? (
             <>
@@ -392,37 +517,15 @@ function Navbar() {
           transition={{ duration: 0.3 }}
           className="md:hidden bg-gray-900/95 backdrop-blur-md mt-4 p-4 rounded-b-xl shadow-lg"
         >
-          <NavLink to="/" className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'} hover:bg-neonBlue/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
-            <FaHome className="inline mr-2" /> Home
-          </NavLink>
-
-          <NavLink to="/paradise" className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-amber-400' : 'text-amber-300'} hover:bg-amber-400/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
-            <FaUmbrellaBeach className="inline mr-2" /> Paradise
-          </NavLink>
-
-          {/* Developers Container - Mobile */}
+          {/* Enhanced Dev Hub Button - Mobile (Positioned before Home) */}
           {location.pathname.startsWith('/paradise') && (
             <div>
-              <motion.button
-                onClick={toggleDevContainer}
-                whileTap={{ scale: 0.95 }}
-                className="w-full text-left py-3 px-4 text-lg font-semibold text-neonBlue bg-neonBlue/10 rounded-lg hover:bg-neonBlue/20 transition-colors duration-200 flex items-center justify-between"
-              >
-                <span className="flex items-center">
-                  <motion.span
-                    animate={{ rotate: isDevContainerOpen ? 180 : 0 }}
-                    className="inline-block mr-2"
-                  >
-                    <FaCode />
-                  </motion.span>
-                  Dev Hub
-                </span>
-                <motion.span
-                  animate={{ rotate: isDevContainerOpen ? 90 : 0 }}
-                >
-                  <FaChevronRight />
-                </motion.span>
-              </motion.button>
+              <DevHubButton
+                isDevContainerOpen={isDevContainerOpen}
+                setIsDevContainerOpen={setIsDevContainerOpen}
+                toggleDevContainer={toggleDevContainer}
+                isMobile={true}
+              />
               {isDevContainerOpen && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
@@ -464,7 +567,6 @@ function Navbar() {
                       </div>
                     </motion.div>
                   ))}
-                  {/* Mobile Quick Links */}
                   <div className="flex flex-wrap gap-2 mt-4">
                     <NavLink 
                       to="/paradise/trending" 
@@ -485,6 +587,14 @@ function Navbar() {
               )}
             </div>
           )}
+
+          <NavLink to="/" className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'} hover:bg-neonBlue/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
+            <FaHome className="inline mr-2" /> Home
+          </NavLink>
+
+          <NavLink to="/paradise" className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-amber-400' : 'text-amber-300'} hover:bg-amber-400/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
+            <FaUmbrellaBeach className="inline mr-2" /> Paradise
+          </NavLink>
 
           {userProfile ? (
             <>
@@ -512,6 +622,18 @@ function Navbar() {
       )}
 
       <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-neonBlue/50 to-transparent opacity-50" />
+
+      {/* Global CSS for Animations */}
+      <style jsx global>{`
+        @keyframes prismFlow {
+          0% {
+            background-position: 0% 50%;
+          }
+          100% {
+            background-position: 200% 50%;
+          }
+        }
+      `}</style>
     </motion.nav>
   );
 }
