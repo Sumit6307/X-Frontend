@@ -279,7 +279,7 @@ function Navbar() {
         { name: 'Documentation', path: '/resources', icon: '📖' },
         { name: 'Dev Tools', path: '/resources', icon: '🛠️' },
         { name: 'Dev Wellness', path: '/resources', icon: '🧠' },
-        { name: 'Best Colleges', path: '/paradise/best-colleges', icon: '🏛️' },
+        { name: 'Best Colleges', path: '/best-colleges', icon: '🏛️' },
 
       ]
     },
@@ -293,8 +293,8 @@ function Navbar() {
         { name: 'Code Assistants', path: '/ai-tools-hub', icon: '🤖' },
         { name: 'Productivity', path: '/ai-tools-hub', icon: '⏱️' },
         { name: 'Dev Tools', path: '/resources', icon: '🔧' },
-        { name: 'Libraries', path: '/paradise/libraries', icon: '📦' },
-        { name: 'Valuable Repo', path: '/paradise/valuable-repo', icon: '💎' },
+        { name: 'Libraries', path: '/libraries', icon: '📦' },
+        { name: 'Valuable Repo', path: '/valuable-repo', icon: '💎' },
       ]
     },
     {
@@ -304,9 +304,9 @@ function Navbar() {
         { name: 'Data & Analytics', path: '/ai-tools-hub', icon: '🔢' },
         { name: 'Industry Trends', path: '/industry-trends', icon: '📈' },
         { name: 'AI Career Guide', path: '/ai-career-guide', icon: '🧭' },
-        { name: 'Research Papers', path: '/paradise/research-papers', icon: '📜' },
-        { name: 'Useful APIs', path: '/paradise/useful-apis', icon: '🔌' },
-        { name: 'Open Source', path: '/paradise/open-source', icon: '🌐' },
+        { name: 'Research Papers', path: '/research-papers', icon: '📜' },
+        { name: 'Useful APIs', path: '/useful-apis', icon: '🔌' },
+        { name: 'Open Source', path: '/open-source', icon: '🌐' },
         { name: 'Design AI', path: '/ai-tools-hub', icon: '🎨' },
 
       ]

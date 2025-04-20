@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
+    "@react-icons/all-files": "^4.1.0",
     "@react-three/fiber": "^9.1.0",
     "@tailwindcss/vite": "^4.0.15",
     "axios": "^1.8.4",
     "cloudinary": "^2.6.0",
     "framer-motion": "^12.5.0",
+    "gsap": "^3.12.7",
     "multer": "^1.4.5-lts.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

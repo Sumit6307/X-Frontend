@@ -20,6 +20,12 @@ import AICareerGuide from './pages/AICarrerGuide';
 import Roadmap from './pages/RoadMap';
 import Certifications from './pages/Certifications';
 import Notes from './pages/Notes';
+import BestColleges from './pages/BestColleges';
+import Libraries from './pages/Libraries';
+import ValuableRepo from './pages/ValuableRepo';
+import ResearchPapers from './pages/ResearchPapers';
+import UsefulAPIs from './pages/UsefulAPIs';
+import OpenSource from './pages/OpenSource';
 
 function App() {
   const [theme, setTheme] = useState('dark');
@@ -47,6 +53,14 @@ function App() {
           <Route path="/roadmaps" element={<Roadmap />} />
           <Route path="/certifications" element={<Certifications />} />
           <Route path="/notes" element={<Notes />} />
+          <Route path="/best-colleges" element={<BestColleges />} />
+          <Route path="/libraries" element={<Libraries />} />
+          <Route path="/valuable-repo" element={<ValuableRepo />} />
+          <Route path="/research-papers" element={<ResearchPapers />} />
+          <Route path="/useful-apis" element={<UsefulAPIs />} />
+          <Route path="/open-source" element={<OpenSource />} />
+
+
 
         </Routes>
       </div>
