@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { FaUserPlus, FaHome, FaBars, FaTimes, FaUser, FaEdit, FaSignOutAlt, FaSignInAlt, FaUmbrellaBeach, FaCode, FaTimesCircle, FaChevronRight } from 'react-icons/fa';
+import { FaUserPlus, FaHome, FaBars, FaTimes, FaUser, FaEdit, FaSignOutAlt, FaSignInAlt, FaUmbrellaBeach, FaCode, FaTimesCircle, FaChevronRight, FaBell } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 // Animation variants
@@ -38,6 +38,31 @@ const devButtonVariants = {
   }
 };
 
+const notificationButtonVariants = {
+  hover: {
+    scale: 1.2,
+    boxShadow: '0 0 25px rgba(0, 212, 255, 1), 0 0 50px rgba(147, 51, 234, 0.7)',
+    transition: { duration: 0.3 }
+  },
+  tap: {
+    scale: 0.9,
+    transition: { duration: 0.1 }
+  },
+  pulse: {
+    scale: [1, 1.1, 1],
+    boxShadow: [
+      '0 0 10px rgba(0, 212, 255, 0.5)',
+      '0 0 20px rgba(0, 212, 255, 0.8)',
+      '0 0 10px rgba(0, 212, 255, 0.5)'
+    ],
+    transition: {
+      duration: 2,
+      repeat: Infinity,
+      ease: 'easeInOut'
+    }
+  }
+};
+
 const menuItemVariants = {
   hidden: { opacity: 0, y: -10 },
   visible: {
@@ -58,10 +83,10 @@ const menuItemVariants = {
 const containerVariants = {
   hidden: { 
     opacity: 0, 
-    scale: 0.98,
-    y: -15,
+    scale: 0.95,
+    y: -20,
     transition: {
-      duration: 0.2,
+      duration: 0.3,
       ease: 'easeInOut'
     } 
   },
@@ -70,9 +95,9 @@ const containerVariants = {
     scale: 1,
     y: 0,
     transition: {
-      duration: 0.3,
+      duration: 0.4,
       ease: 'easeOut',
-      staggerChildren: 0.05,
+      staggerChildren: 0.1,
       when: "beforeChildren"
     }
   }
@@ -227,13 +252,31 @@ const DevHubButton = ({ isDevContainerOpen, setIsDevContainerOpen, toggleDevCont
   );
 };
 
+// Editable notification messages (add or modify here)
+const notificationMessages = [
+  'GravityX coming soon',
+  'Hackathon is coming in the catchy way',
+  // Add more messages here as needed
+];
+
+// Function to create a new notification
+const createNotification = (id, message) => ({
+  id,
+  message,
+  timestamp: new Date().toLocaleTimeString(),
+  read: false,
+});
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDevContainerOpen, setIsDevContainerOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Load user profile from localStorage
   useEffect(() => {
     const profileId = localStorage.getItem('userProfileId');
     const profileName = localStorage.getItem('userProfileName');
@@ -244,6 +287,7 @@ function Navbar() {
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleDevContainer = () => setIsDevContainerOpen(!isDevContainerOpen);
+  const toggleNotification = () => setIsNotificationOpen(!isNotificationOpen);
 
   const handleLogout = () => {
     localStorage.removeItem('userProfileId');
@@ -251,6 +295,23 @@ function Navbar() {
     setUserProfile(null);
     navigate('/login');
   };
+
+  const markAllNotificationsRead = () => {
+    setNotifications((prev) => prev.map((notif) => ({ ...notif, read: true })));
+    console.log('All notifications marked as read');
+  };
+
+  // Add a specific notification by index from notificationMessages
+  const addNotification = (index) => {
+    const message = notificationMessages[index];
+    if (message) {
+      const newNotification = createNotification(notifications.length + 1, message);
+      setNotifications((prev) => [newNotification, ...prev.slice(0, 9)]); // Keep latest 10 notifications
+      console.log('Notification added:', newNotification);
+    }
+  };
+
+  const unreadCount = notifications.filter((notif) => !notif.read).length;
 
   const developerMenuSections = [
     {
@@ -265,7 +326,6 @@ function Navbar() {
         { name: 'Remote Work', path: '/opportunities', icon: '🌍' },
         { name: 'Roadmaps', path: '/roadmaps', icon: '🗺️' },
         { name: 'Certifications', path: '/certifications', icon: '🏅' }
-
       ]
     },
     {
@@ -279,8 +339,7 @@ function Navbar() {
         { name: 'Documentation', path: '/resources', icon: '📖' },
         { name: 'Dev Tools', path: '/resources', icon: '🛠️' },
         { name: 'Dev Wellness', path: '/resources', icon: '🧠' },
-        { name: 'Best Colleges', path: '/best-colleges', icon: '🏛️' },
-
+        { name: 'Best Colleges', path: '/best-colleges', icon: '🏛️' }
       ]
     },
     {
@@ -294,7 +353,7 @@ function Navbar() {
         { name: 'Productivity', path: '/ai-tools-hub', icon: '⏱️' },
         { name: 'Dev Tools', path: '/resources', icon: '🔧' },
         { name: 'Libraries', path: '/libraries', icon: '📦' },
-        { name: 'Valuable Repo', path: '/valuable-repo', icon: '💎' },
+        { name: 'Valuable Repo', path: '/valuable-repo', icon: '💎' }
       ]
     },
     {
@@ -307,8 +366,7 @@ function Navbar() {
         { name: 'Research Papers', path: '/research-papers', icon: '📜' },
         { name: 'Useful APIs', path: '/useful-apis', icon: '🔌' },
         { name: 'Open Source', path: '/open-source', icon: '🌐' },
-        { name: 'Design AI', path: '/ai-tools-hub', icon: '🎨' },
-
+        { name: 'Design AI', path: '/ai-tools-hub', icon: '🎨' }
       ]
     }
   ];
@@ -462,7 +520,7 @@ function Navbar() {
 
           <NavLink to="/" className={({ isActive }) => `flex items-center text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'}`}>
             <motion.div variants={navItemVariants} whileHover="hover" className="flex items-center">
-              <FaHome className="mr-2 ml-37" /> Home
+              <FaHome className="mr-2" /> Home
             </motion.div>
           </NavLink>
 
@@ -502,6 +560,106 @@ function Navbar() {
               </NavLink>
             </>
           )}
+
+          {/* Notification Icon - Desktop (Rightmost) */}
+          <div className="relative">
+            <motion.button
+              onClick={toggleNotification}
+              variants={notificationButtonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              animate="pulse"
+              className="relative flex items-center text-lg font-semibold text-neonBlue p-2 rounded-full bg-neonBlue/20 border-2 border-neonBlue/50 shadow-[0_0_15px_rgba(0,212,255,0.6)]"
+            >
+              <FaBell className="text-2xl" />
+              {unreadCount > 0 && (
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-neonPurple text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-neonBlue/50"
+                >
+                  {unreadCount}
+                </motion.span>
+              )}
+            </motion.button>
+
+            {isNotificationOpen && (
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                className="absolute top-14 right-0 w-96 max-h-[70vh] bg-gray-900/90 backdrop-blur-xl rounded-2xl shadow-[0_0_50px_rgba(0,212,255,0.5)] border-2 border-neonBlue/60 overflow-hidden z-50"
+              >
+                <div className="relative p-6 max-h-[calc(70vh-3rem)] overflow-y-auto">
+                  <div className="flex justify-between items-center mb-6">
+                    <motion.h3
+                      initial={{ x: -10, opacity: 0 }}
+                      animate={{ x: 0, opacity: 1 }}
+                      transition={{ delay: 0.1 }}
+                      className="text-xl font-bold text-neonBlue flex items-center"
+                    >
+                      <FaBell className="mr-3 text-2xl" /> Notifications
+                    </motion.h3>
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={() => setIsNotificationOpen(false)}
+                      className="text-gray-300 hover:text-neonBlue transition-colors p-2"
+                    >
+                      <FaTimes size={20} />
+                    </motion.button>
+                  </div>
+
+                  <div className="flex flex-col space-y-3 mb-4">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => addNotification(0)}
+                      className="py-3 px-4 text-sm font-medium text-white bg-neonBlue/20 rounded-lg hover:bg-neonBlue/30 transition-colors"
+                    >
+                      Add: GravityX Coming Soon
+                    </motion.button>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => addNotification(1)}
+                      className="py-3 px-4 text-sm font-medium text-white bg-neonPurple/20 rounded-lg hover:bg-neonPurple/30 transition-colors"
+                    >
+                      Add: Hackathon is Coming
+                    </motion.button>
+                  </div>
+
+                  {notifications.length === 0 ? (
+                    <p className="text-gray-300 text-sm font-medium">No notifications yet</p>
+                  ) : (
+                    <>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={markAllNotificationsRead}
+                        className="w-full py-3 px-4 mb-4 text-sm font-medium text-neonBlue bg-neonBlue/10 rounded-lg hover:bg-neonBlue/20 transition-colors"
+                      >
+                        Mark All as Read
+                      </motion.button>
+                      {notifications.map((notif) => (
+                        <motion.div
+                          key={notif.id}
+                          variants={menuItemVariants}
+                          className={`p-4 mb-3 rounded-lg ${notif.read ? 'bg-gray-800/50' : 'bg-neonBlue/20'} hover:bg-neonBlue/30 transition-all duration-200 border-l-4 ${notif.read ? 'border-gray-600' : 'border-neonPurple'}`}
+                        >
+                          <p className={`text-sm font-semibold ${notif.read ? 'text-gray-300' : 'text-white'}`}>
+                            {notif.message}
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">{notif.timestamp}</p>
+                        </motion.div>
+                      ))}
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </div>
         </div>
 
         <button className="md:hidden text-gray-300 hover:text-neonBlue focus:outline-none" onClick={toggleMenu}>
@@ -587,6 +745,83 @@ function Navbar() {
               )}
             </div>
           )}
+
+          {/* Notification Icon - Mobile */}
+          <div className="relative">
+            <motion.button
+              onClick={toggleNotification}
+              variants={notificationButtonVariants}
+              whileHover="hover"
+              whileTap="tap"
+              animate="pulse"
+              className="w-full text-left py-3 px-4 text-lg font-semibold text-neonBlue hover:bg-neonBlue/10 rounded-lg transition-colors duration-200 flex items-center"
+            >
+              <FaBell className="inline mr-2 text-xl" /> Notifications
+              {unreadCount > 0 && (
+                <span className="ml-2 w-6 h-6 bg-neonPurple text-white text-xs font-bold rounded-full flex items-center justify-center border-2 border-neonBlue/50">
+                  {unreadCount}
+                </span>
+              )}
+            </motion.button>
+            {isNotificationOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="mt-2 ml-4 p-4 bg-gray-900/90 backdrop-blur-xl rounded-2xl border-2 border-neonBlue/60"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-md font-semibold text-neonPurple flex items-center">
+                    <FaBell className="mr-2 text-xl" /> Notifications
+                  </h3>
+                  <button
+                    onClick={() => setIsNotificationOpen(false)}
+                    className="text-gray-300 hover:text-neonBlue transition-colors p-2"
+                  >
+                    <FaTimes size={20} />
+                  </button>
+                </div>
+                <div className="flex flex-col space-y-3 mb-4">
+                  <button
+                    onClick={() => addNotification(0)}
+                    className="py-3 px-4 text-sm font-medium text-white bg-neonBlue/20 rounded-lg hover:bg-neonBlue/30 transition-colors"
+                  >
+                    Add: GravityX Coming Soon
+                  </button>
+                  <button
+                    onClick={() => addNotification(1)}
+                    className="py-3 px-4 text-sm font-medium text-white bg-neonPurple/20 rounded-lg hover:bg-neonPurple/30 transition-colors"
+                  >
+                    Add: Hackathon is Coming
+                  </button>
+                </div>
+                {notifications.length === 0 ? (
+                  <p className="text-gray-300 text-sm font-medium">No notifications yet</p>
+                ) : (
+                  <>
+                    <button
+                      onClick={markAllNotificationsRead}
+                      className="w-full py-3 px-4 mb-4 text-sm font-medium text-neonBlue bg-neonBlue/10 rounded-lg hover:bg-neonBlue/20 transition-colors"
+                    >
+                      Mark All as Read
+                    </button>
+                    {notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        className={`p-4 mb-3 rounded-lg ${notif.read ? 'bg-gray-800/50' : 'bg-neonBlue/20'} hover:bg-neonBlue/30 transition-all duration-200 border-l-4 ${notif.read ? 'border-gray-600' : 'border-neonPurple'}`}
+                      >
+                        <p className={`text-sm font-semibold ${notif.read ? 'text-gray-300' : 'text-white'}`}>
+                          {notif.message}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-1">{notif.timestamp}</p>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </motion.div>
+            )}
+          </div>
 
           <NavLink to="/" className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'} hover:bg-neonBlue/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
             <FaHome className="inline mr-2" /> Home
