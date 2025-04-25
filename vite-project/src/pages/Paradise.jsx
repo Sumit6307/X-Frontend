@@ -174,7 +174,7 @@ function Paradise() {
         {/* Catchier Earth */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1, transition: { duration: 2, ease: 'easeOut' } }}
+          animate={{ opacity: 1, scale: 1, transition: {tolduration: 2, ease: 'easeOut' } }}
           className="relative flex justify-center py-16"
         >
           <Globe
@@ -315,7 +315,7 @@ function Paradise() {
                   <p className="text-gray-400 text-sm italic text-center mb-6">{item.extra}</p>
                   <Link
                     to={item.path}
-                    className="block text-center text-cyan-400 hover:text-purple-400 font-semibold text-lg"
+                    className="block text-center text-cyan-500 hover:text-purple-400 font-semibold text-lg"
                   >
                     Explore Now <FaRocket className="inline ml-2" />
                   </Link>
@@ -372,10 +372,16 @@ function Paradise() {
           className="container mx-auto py-24 px-6"
         >
           <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)]">
-            Contributor Badges
+            Open Source Contributor Badges
           </h2>
-          <p className="text-2xl md:text-3xl text-gray-300 text-center mb-20 max-w-3xl mx-auto">
-            Celebrate the stars of GravityX with cosmic honors.
+          <p className="text-2xl md:text-3xl text-gray-300 text-center mb-8 max-w-3xl mx-auto">
+            Celebrate the stars of GravityX with cosmic honors as we embrace our open-source journey.
+          </p>
+          <p className="text-3xl md:text-4xl font-bold text-purple-400 text-center mb-20 max-w-3xl mx-auto animate-[pulse_3s_infinite]">
+            OPEN SOURCE PROGRAM COMING SOON!
+          </p>
+          <p className="text-xl md:text-2xl text-gray-400 text-center mb-20 max-w-3xl mx-auto">
+            These badges are awarded through GravityX's upcoming open-source programming initiatives.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-4xl mx-auto">
             {[
@@ -428,10 +434,10 @@ function Paradise() {
             Fuel GravityX with your wildest ideas! Suggest features that redefine tech, roast us to perfection, and co-create the future of development.
           </p>
           <div className="flex justify-center gap-10">
-            <Link to="#" className="bg-cyan-500 text-black py-5 px-10 rounded-full flex items-center gap-4 font-bold text-xl hover:bg-cyan-400 shadow-[0_0_30px_rgba(0,212,255,1)]">
+            <Link to="/suggest?type=idea" className="bg-cyan-500 text-black py-5 px-10 rounded-full flex items-center gap-4 font-bold text-xl hover:bg-cyan-400 shadow-[0_0_30px_rgba(0,212,255,1)]">
               <FaStar /> Suggest Idea
             </Link>
-            <Link to="#" className="bg-red-500 text-white py-5 px-10 rounded-full flex items-center gap-4 font-bold text-xl hover:bg-red-400 shadow-[0_0_30px_rgba(255,0,0,1)]">
+            <Link to="/suggest?type=roast" className="bg-red-500 text-white py-5 px-10 rounded-full flex items-center gap-4 font-bold text-xl hover:bg-red-400 shadow-[0_0_30px_rgba(255,0,0,1)]">
               <FaLightbulb /> Roast Us
             </Link>
           </div>
@@ -454,11 +460,14 @@ function Paradise() {
               className="flex gap-20 items-center"
             >
               {[
-                'https://logos-world.net/wp-content/uploads/2020/12/Microsoft-Logo.png',
-                'https://www.cloudflare.com/static/77a2e6c8bc155da49133e2379e8f4d9b/cloudflare-logo.png',
-                'https://assets.vercel.com/image/upload/v1663738468/front/nextjs/Vercel-logotype-dark.png',
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/ISO_Logo_%282016%29.svg/1200px-ISO_Logo_%282016%29.svg.png',
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/GitHub_Logo.svg/1200px-GitHub_Logo.svg.png',
+                'https://www.microsoft.com/en-us/about/media/assets/images/microsoft-logo.png',
+                'https://www.cloudflare.com/static/logo-horizontal-light.png',
+                'https://vercel.com/_next/static/media/vercel-logotype-dark.111a1562.svg',
+                'https://www.msme.gov.in/sites/default/files/MSME-LOGO.png',
+                'https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png',
+                'https://www.digitalocean.com/_next/static/media/logo.3b0060c8.svg',
+                'https://aws.amazon.com/_next/static/images/aws-logo-dark.2f3b6e1a.svg',
+                'https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png',
               ].map((src, idx) => (
                 <motion.div
                   key={idx}
@@ -475,14 +484,17 @@ function Paradise() {
               ))}
               {/* Duplicate for seamless scroll */}
               {[
-                'https://logos-world.net/wp-content/uploads/2020/12/Microsoft-Logo.png',
-                'https://www.cloudflare.com/static/77a2e6c8bc155da49133e2379e8f4d9b/cloudflare-logo.png',
-                'https://assets.vercel.com/image/upload/v1663738468/front/nextjs/Vercel-logotype-dark.png',
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/ISO_Logo_%282016%29.svg/1200px-ISO_Logo_%282016%29.svg.png',
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/GitHub_Logo.svg/1200px-GitHub_Logo.svg.png',
+                'https://www.microsoft.com/en-us/about/media/assets/images/microsoft-logo.png',
+                'https://www.cloudflare.com/static/logo-horizontal-light.png',
+                'https://vercel.com/_next/static/media/vercel-logotype-dark.111a1562.svg',
+                'https://www.msme.gov.in/sites/default/files/MSME-LOGO.png',
+                'https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png',
+                'https://www.digitalocean.com/_next/static/media/logo.3b0060c8.svg',
+                'https://aws.amazon.com/_next/static/images/aws-logo-dark.2f3b6e1a.svg',
+                'https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png',
               ].map((src, idx) => (
                 <motion.div
-                  key={idx + 5}
+                  key={idx + 8}
                   className="relative"
                   whileHover={{ scale: 1.2, y: -15, transition: { duration: 0.3 } }}
                 >

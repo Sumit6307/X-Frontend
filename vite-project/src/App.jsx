@@ -26,6 +26,7 @@ import ValuableRepo from './pages/ValuableRepo';
 import ResearchPapers from './pages/ResearchPapers';
 import UsefulAPIs from './pages/UsefulAPIs';
 import OpenSource from './pages/OpenSource';
+import Suggest from './pages/Suggest';
 
 function App() {
   const [theme, setTheme] = useState('dark');
@@ -59,6 +60,7 @@ function App() {
           <Route path="/research-papers" element={<ResearchPapers />} />
           <Route path="/useful-apis" element={<UsefulAPIs />} />
           <Route path="/open-source" element={<OpenSource />} />
+          <Route path="/suggest" element={<Suggest />} />
 
 
 
