@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { FaUserPlus, FaHome, FaBars, FaTimes, FaUser, FaEdit, FaSignOutAlt, FaSignInAlt, FaUmbrellaBeach, FaCode, FaTimesCircle, FaChevronRight, FaBell } from 'react-icons/fa';
+import { FaUserPlus, FaHome, FaBars, FaTimes, FaUser, FaEdit, FaSignOutAlt, FaSignInAlt, FaUmbrellaBeach, FaCode, FaTimesCircle, FaChevronRight, FaBell, FaRocket, FaTrophy } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 // Animation variants
@@ -69,14 +69,15 @@ const menuItemVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.2,
+      duration: 0.3,
       ease: 'easeOut'
     }
   },
   hover: {
-    scale: 1.02,
-    backgroundColor: 'rgba(0, 212, 255, 0.1)',
-    transition: { duration: 0.15 }
+    scale: 1.03,
+    backgroundColor: 'rgba(0, 212, 255, 0.15)',
+    boxShadow: '0 0 15px rgba(0, 212, 255, 0.3)',
+    transition: { duration: 0.2 }
   }
 };
 
@@ -203,8 +204,8 @@ const DevHubButton = ({ isDevContainerOpen, setIsDevContainerOpen, toggleDevCont
               opacity: 0,
             }}
             animate={{
-              x: `${50 + Math.cos((i * 120 + timeBasedGlow * 360) * Math.PI / 180) * 60}%`,
-              y: `${50 + Math.sin((i * 120 + timeBasedGlow * 360) * Math.PI / 180) * 60}%`,
+              x: `${50 + Math.cos((i * 120 + timeBasedGlow * 360) * Math.PI) / 180} * 60}%`,
+              y: `${50 + Math.sin((i * 120 + timeBasedGlow * 360) * Math.PI) / 180} * 60}%`,
               opacity: [0, 0.6, 0],
               scale: [0, 2, 0],
             }}
@@ -252,17 +253,19 @@ const DevHubButton = ({ isDevContainerOpen, setIsDevContainerOpen, toggleDevCont
   );
 };
 
-// Editable notification messages (add or modify here)
+// Editable notification messages with icons
 const notificationMessages = [
-  'GravityX coming soon',
-  'Hackathon is coming in the catchy way',
-  // Add more messages here as needed
+  { message: 'GravityX coming soon', icon: FaRocket },
+  { message: 'Hackathon is coming in the catchy way', icon: FaTrophy },
+  // Add more messages with icons here, e.g.:
+  // { message: 'Join our community now!', icon: FaUsers }
 ];
 
 // Function to create a new notification
-const createNotification = (id, message) => ({
+const createNotification = (id, messageObj) => ({
   id,
-  message,
+  message: messageObj.message,
+  icon: messageObj.icon,
   timestamp: new Date().toLocaleTimeString(),
   read: false,
 });
@@ -303,9 +306,9 @@ function Navbar() {
 
   // Add a specific notification by index from notificationMessages
   const addNotification = (index) => {
-    const message = notificationMessages[index];
-    if (message) {
-      const newNotification = createNotification(notifications.length + 1, message);
+    const messageObj = notificationMessages[index];
+    if (messageObj) {
+      const newNotification = createNotification(notifications.length + 1, messageObj);
       setNotifications((prev) => [newNotification, ...prev.slice(0, 9)]); // Keep latest 10 notifications
       console.log('Notification added:', newNotification);
     }
@@ -520,7 +523,7 @@ function Navbar() {
 
           <NavLink to="/" className={({ isActive }) => `flex items-center text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'}`}>
             <motion.div variants={navItemVariants} whileHover="hover" className="flex items-center">
-              <FaHome className="mr-2" /> Home
+              <FaHome className="mr-2 ml-51" /> Home
             </motion.div>
           </NavLink>
 
@@ -642,18 +645,63 @@ function Navbar() {
                       >
                         Mark All as Read
                       </motion.button>
-                      {notifications.map((notif) => (
-                        <motion.div
-                          key={notif.id}
-                          variants={menuItemVariants}
-                          className={`p-4 mb-3 rounded-lg ${notif.read ? 'bg-gray-800/50' : 'bg-neonBlue/20'} hover:bg-neonBlue/30 transition-all duration-200 border-l-4 ${notif.read ? 'border-gray-600' : 'border-neonPurple'}`}
-                        >
-                          <p className={`text-sm font-semibold ${notif.read ? 'text-gray-300' : 'text-white'}`}>
-                            {notif.message}
-                          </p>
-                          <p className="text-xs text-gray-400 mt-1">{notif.timestamp}</p>
-                        </motion.div>
-                      ))}
+                      {notifications.map((notif) => {
+                        const IconComponent = notif.icon;
+                        return (
+                          <motion.div
+                            key={notif.id}
+                            variants={menuItemVariants}
+                            className={`relative p-4 mb-3 rounded-xl ${
+                              notif.read ? 'bg-gray-800/50' : 'bg-gradient-to-r from-neonBlue/20 to-neonPurple/20'
+                            } border-2 ${notif.read ? 'border-gray-700' : 'border-neonBlue/50'} hover:border-neonPurple/50 transition-all duration-300 shadow-[0_0_15px_rgba(0,212,255,0.3)] overflow-hidden`}
+                            whileHover="hover"
+                          >
+                            {/* Particle Effects */}
+                            <span className="absolute inset-0 pointer-events-none">
+                              {[...Array(3)].map((_, i) => (
+                                <motion.span
+                                  key={i}
+                                  className="absolute w-1.5 h-1.5 bg-neonBlue rounded-full"
+                                  initial={{
+                                    x: `${Math.random() * 100}%`,
+                                    y: `${Math.random() * 100}%`,
+                                    opacity: 0,
+                                  }}
+                                  animate={{
+                                    x: `${Math.random() * 100}%`,
+                                    y: `${Math.random() * 100}%`,
+                                    opacity: [0, 0.7, 0],
+                                    scale: [0, 1.2, 0],
+                                  }}
+                                  transition={{
+                                    duration: 2 + Math.random() * 1,
+                                    repeat: Infinity,
+                                    delay: i * 0.2,
+                                  }}
+                                />
+                              ))}
+                            </span>
+
+                            <div className="flex items-start space-x-3">
+                              {IconComponent && (
+                                <motion.div
+                                  animate={{ scale: [1, 1.1, 1] }}
+                                  transition={{ duration: 1.5, repeat: Infinity }}
+                                  className="text-2xl text-neonPurple"
+                                >
+                                  <IconComponent />
+                                </motion.div>
+                              )}
+                              <div>
+                                <p className={`text-sm font-semibold ${notif.read ? 'text-gray-300' : 'text-white'}`}>
+                                  {notif.message}
+                                </p>
+                                <p className="text-xs text-gray-400 mt-1">{notif.timestamp}</p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        );
+                      })}
                     </>
                   )}
                 </div>
@@ -806,17 +854,61 @@ function Navbar() {
                     >
                       Mark All as Read
                     </button>
-                    {notifications.map((notif) => (
-                      <div
-                        key={notif.id}
-                        className={`p-4 mb-3 rounded-lg ${notif.read ? 'bg-gray-800/50' : 'bg-neonBlue/20'} hover:bg-neonBlue/30 transition-all duration-200 border-l-4 ${notif.read ? 'border-gray-600' : 'border-neonPurple'}`}
-                      >
-                        <p className={`text-sm font-semibold ${notif.read ? 'text-gray-300' : 'text-white'}`}>
-                          {notif.message}
-                        </p>
-                        <p className="text-xs text-gray-400 mt-1">{notif.timestamp}</p>
-                      </div>
-                    ))}
+                    {notifications.map((notif) => {
+                      const IconComponent = notif.icon;
+                      return (
+                        <div
+                          key={notif.id}
+                          className={`relative p-4 mb-3 rounded-xl ${
+                            notif.read ? 'bg-gray-800/50' : 'bg-gradient-to-r from-neonBlue/20 to-neonPurple/20'
+                          } border-2 ${notif.read ? 'border-gray-700' : 'border-neonBlue/50'} hover:border-neonPurple/50 transition-all duration-300 shadow-[0_0_15px_rgba(0,212,255,0.3)] overflow-hidden`}
+                        >
+                          {/* Particle Effects */}
+                          <span className="absolute inset-0 pointer-events-none">
+                            {[...Array(3)].map((_, i) => (
+                              <motion.span
+                                key={i}
+                                className="absolute w-1.5 h-1.5 bg-neonBlue rounded-full"
+                                initial={{
+                                  x: `${Math.random() * 100}%`,
+                                  y: `${Math.random() * 100}%`,
+                                  opacity: 0,
+                                }}
+                                animate={{
+                                  x: `${Math.random() * 100}%`,
+                                  y: `${Math.random() * 100}%`,
+                                  opacity: [0, 0.7, 0],
+                                  scale: [0, 1.2, 0],
+                                }}
+                                transition={{
+                                  duration: 2 + Math.random() * 1,
+                                  repeat: Infinity,
+                                  delay: i * 0.2,
+                                }}
+                              />
+                            ))}
+                          </span>
+
+                          <div className="flex items-start space-x-3">
+                            {IconComponent && (
+                              <motion.div
+                                animate={{ scale: [1, 1.1, 1] }}
+                                transition={{ duration: 1.5, repeat: Infinity }}
+                                className="text-2xl text-neonPurple"
+                              >
+                                <IconComponent />
+                              </motion.div>
+                            )}
+                            <div>
+                              <p className={`text-sm font-semibold ${notif.read ? 'text-gray-300' : 'text-white'}`}>
+                                {notif.message}
+                              </p>
+                              <p className="text-xs text-gray-400 mt-1">{notif.timestamp}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </>
                 )}
               </motion.div>
@@ -833,7 +925,7 @@ function Navbar() {
 
           {userProfile ? (
             <>
-              <NavLink to={`/profile/${userProfile.id}`} className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'} hover:bg-neonBlue/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
+              <NavLink to={`/profile piercer/${userProfile.id}`} className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'} hover:bg-neonBlue/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
                 <FaUser className="inline mr-2" /> {userProfile.name}
               </NavLink>
               <NavLink to={`/edit-profile/${userProfile.id}`} className={({ isActive }) => `block py-3 px-4 text-lg font-semibold ${isActive ? 'text-neonBlue' : 'text-gray-300'} hover:bg-neonBlue/10 rounded-lg transition-colors duration-200`} onClick={toggleMenu}>
