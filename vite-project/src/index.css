@@ -1,18 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --neon-blue: #00D4FF; /* Starfield only */
-  --neon-purple: #D81BFF; /* Starfield only */
-  --light-blue: #93C5FD; /* Starfield only */
-  --light-indigo: #A5B4FC; /* Starfield only */
-  --dark-bg-start: #0A0E1A; /* Starfield only */
-  --dark-bg-end: #1A1F2B; /* Starfield only */
-  --light-bg-start: #E0F7FA; /* Starfield only */
-  --light-bg-end: #EDE9FE; /* Starfield only */
-  --ui-cyan: #00BCD4; /* UI placeholder */
-  --ui-purple: #9C27B0; /* UI placeholder */
+  --neon-blue: #00D4FF;
+  --neon-purple: #D81BFF;
+  --light-blue: #93C5FD;
+  --light-indigo: #A5B4FC;
+  --dark-bg-start: #0A0E1A;
+  --dark-bg-end: #1A1F2B;
+  --light-bg-start: #E0F7FA;
+  --light-bg-end: #EDE9FE;
+  --ui-cyan: #00BCD4;
+  --ui-purple: #9C27B0;
 }
-
 body {
   font-family: 'Poppins', sans-serif;
   background: transparent;
@@ -146,3 +145,5 @@ body {
   50% { opacity: 0.8; }
   100% { opacity: 0.2; }
 }
+
+

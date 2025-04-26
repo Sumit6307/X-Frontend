@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Globe from 'react-globe.gl';
@@ -82,8 +82,19 @@ function Paradise() {
     { startLat: -23.5505, startLng: -46.6333, endLat: 40.7128, endLng: -74.0060, color: '#9333ea' },
   ];
 
+  // Debug log
+  useEffect(() => {
+    console.log('Paradise.jsx: Component mounted');
+    console.log('Paradise.jsx: Star-like particles rendered in hero section', {
+      particleCount: 20,
+      color: 'bg-cyan-400',
+      size: '1x1px',
+      animation: 'falling, fading, 5-10s duration',
+    });
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 text-white overflow-hidden relative">
+    <div className="min-h-screen bg-transparent text-white overflow-hidden relative">
       <Navbar />
       {/* Back Button */}
       <motion.button
@@ -103,7 +114,7 @@ function Paradise() {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.3)_0%,transparent_70%)] -z-10" />
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 animate-[pulse_5s_infinite]" />
 
-        {/* Enhanced Hero Section */}
+        {/* Hero Section with Star-Like Particles */}
         <motion.section
           initial="hidden"
           animate="visible"
@@ -112,9 +123,10 @@ function Paradise() {
         >
           <div className="relative z-10">
             <motion.h1
-              className="text-7xl md:text-9xl font-extrabold tracking-widest drop-shadow-[0_0_30px_rgba(0,212,255,1)]"
+              className="text-7xl md:text-9xl font-extrabold tracking-widest neon-heading"
               initial="hidden"
               animate="visible"
+              transition={{ duration: 0.8, ease: 'easeOut' }}
             >
               {['One', 'Platform', 'for', 'Global', 'Developers'].map((word, i) => (
                 <motion.span
@@ -158,7 +170,7 @@ function Paradise() {
               ))}
             </motion.div>
           </div>
-          {/* Subtle Particle Background */}
+          {/* Star-Like Particle Background (Exact Match with Home.jsx) */}
           <div className="absolute inset-0 pointer-events-none">
             {Array.from({ length: 20 }).map((_, i) => (
               <motion.div
@@ -174,7 +186,7 @@ function Paradise() {
         {/* Catchier Earth */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1, transition: {tolduration: 2, ease: 'easeOut' } }}
+          animate={{ opacity: 1, scale: 1, transition: { tolduration: 2, ease: 'easeOut' } }}
           className="relative flex justify-center py-16"
         >
           <Globe
@@ -225,7 +237,7 @@ function Paradise() {
           variants={sectionVariants}
           className="container mx-auto py-24 px-6"
         >
-          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)]">
+          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)] neon-heading">
             Dive into GravityX
           </h2>
           <p className="text-2xl md:text-3xl text-gray-300 text-center mb-20 max-w-3xl mx-auto">
@@ -332,7 +344,7 @@ function Paradise() {
           variants={sectionVariants}
           className="container mx-auto py-24 px-6 bg-gradient-to-r from-cyan-500/10 via-purple-500/10 to-cyan-500/10 rounded-3xl"
         >
-          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)]">
+          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)] neon-heading">
             Coming Soon to GravityX
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 max-w-6xl mx-auto">
@@ -371,7 +383,7 @@ function Paradise() {
           variants={sectionVariants}
           className="container mx-auto py-24 px-6"
         >
-          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)]">
+          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)] neon-heading">
             Open Source Contributor Badges
           </h2>
           <p className="text-2xl md:text-3xl text-gray-300 text-center mb-8 max-w-3xl mx-auto">
@@ -427,14 +439,14 @@ function Paradise() {
           variants={sectionVariants}
           className="container mx-auto py-24 px-6 text-center"
         >
-          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-10 drop-shadow-[0_0_20px_rgba(0,212,255,0.9)]">
+          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-10 drop-shadow-[0_0_20px_rgba(0,212,255,0.9)] neon-heading">
             Innovation Knows No Bounds...✦
           </h2>
           <p className="text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto mb-16">
             Fuel GravityX with your wildest ideas! Suggest features that redefine tech, roast us to perfection, and co-create the future of development.
           </p>
           <div className="flex justify-center gap-10">
-            <Link to="/suggest?type=idea" className="bg-cyan-500 text-black py-5 px-10 rounded-full flex items-center gap-4 font-bold text-xl hover:bg-cyan-400 shadow-[0_0_30px_rgba(0,212,255,1)]">
+            <Link to="/suggest?type=idea" className="shine-button text-white py-5 px-10 rounded-full flex items-center gap-4 font-bold text-xl">
               <FaStar /> Suggest Idea
             </Link>
             <Link to="/suggest?type=roast" className="bg-red-500 text-white py-5 px-10 rounded-full flex items-center gap-4 font-bold text-xl hover:bg-red-400 shadow-[0_0_30px_rgba(255,0,0,1)]">
@@ -443,14 +455,14 @@ function Paradise() {
           </div>
         </motion.section>
 
-        {/* Enhanced Supported By */}
+        {/* Supported By */}
         <motion.section
           initial="hidden"
           animate="visible"
           variants={sectionVariants}
           className="container mx-auto py-24 px-6 bg-black relative"
         >
-          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)]">
+          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)] neon-heading">
             Supported By
           </h2>
           <div className="relative overflow-hidden py-12 bg-gradient-to-r from-gray-900/50 via-black to-gray-900/50 rounded-3xl border border-cyan-500/30 shadow-[0_0_30px_rgba(0,212,255,0.2)]">
