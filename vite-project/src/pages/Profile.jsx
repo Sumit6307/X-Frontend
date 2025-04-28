@@ -8,37 +8,14 @@ import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaEdit, FaCode, FaExterna
 const containerVariants = { hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } } };
 const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } };
 const projectVariants = { hidden: { opacity: 0, y: 30 }, visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.2, duration: 0.6 } }), hover: { scale: 1.03, boxShadow: '0 0 25px rgba(0, 212, 255, 0.4)' } };
+const noProjectVariants = { hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } }, hover: { scale: 1.02, boxShadow: '0 0 20px rgba(0, 212, 255, 0.3)' } };
 const inputVariants = { focus: { scale: 1.02, borderColor: '#00D4FF', transition: { duration: 0.2 } } };
 const buttonVariants = { hover: { scale: 1.05, boxShadow: '0 0 15px rgba(0, 212, 255, 0.5)' }, tap: { scale: 0.95 } };
-
-// Animation Variants for Back Button
 const backButtonVariants = {
   hidden: { x: -50, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 120,
-      damping: 12,
-      delay: 0.3,
-    },
-  },
-  hover: {
-    x: 5,
-    scale: 1.05,
-    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
-    backgroundColor: 'rgba(0, 212, 255, 0.3)',
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 15,
-    },
-  },
-  tap: {
-    scale: 0.9,
-    backgroundColor: 'rgba(0, 212, 255, 0.4)',
-  },
+  visible: { x: 0, opacity: 1, transition: { type: 'spring', stiffness: 120, damping: 12, delay: 0.3 } },
+  hover: { x: 5, scale: 1.05, boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)', backgroundColor: 'rgba(0, 212, 255, 0.3)', transition: { type: 'spring', stiffness: 300, damping: 15 } },
+  tap: { scale: 0.9, backgroundColor: 'rgba(0, 212, 255, 0.4)' },
 };
 
 function Profile() {
@@ -157,7 +134,6 @@ function Profile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden relative">
       <Navbar />
-      {/* Back Button */}
       <motion.button
         variants={backButtonVariants}
         initial="hidden"
@@ -243,7 +219,24 @@ function Profile() {
                 </motion.div>
               ))
             ) : (
-              <p className="text-gray-400">No projects available</p>
+              <motion.div
+                variants={noProjectVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+                className="bg-gray-800/80 p-6 rounded-lg border border-cyan-500/10 shadow-[0_0_15px_rgba(0,212,255,0.1)] text-center"
+              >
+                <p className="text-gray-300 text-lg">I don’t have any projects yet</p>
+                {isCurrentUser && (
+                  <motion.a
+                    href={`/edit-profile/${id}`}
+                    className="mt-4 inline-block text-cyan-400 hover:text-purple-400 font-semibold transition-colors"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    Add a project now
+                  </motion.a>
+                )}
+              </motion.div>
             )}
           </motion.div>
           {showAuthForm && (

@@ -7,35 +7,11 @@ import { FaUser, FaMapMarkerAlt, FaCode, FaLink, FaPlus, FaTrash, FaRocket, FaLo
 
 const inputVariants = { focus: { scale: 1.02, borderColor: '#00D4FF', transition: { duration: 0.2 } } };
 const buttonVariants = { hover: { scale: 1.05, boxShadow: '0 0 15px rgba(0, 212, 255, 0.5)' }, tap: { scale: 0.95 } };
-
-// Animation Variants for Back Button
 const backButtonVariants = {
   hidden: { x: -50, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: {
-      type: 'spring',
-      stiffness: 120,
-      damping: 12,
-      delay: 0.3,
-    },
-  },
-  hover: {
-    x: 5,
-    scale: 1.05,
-    boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)',
-    backgroundColor: 'rgba(0, 212, 255, 0.3)',
-    transition: {
-      type: 'spring',
-      stiffness: 300,
-      damping: 15,
-    },
-  },
-  tap: {
-    scale: 0.9,
-    backgroundColor: 'rgba(0, 212, 255, 0.4)',
-  },
+  visible: { x: 0, opacity: 1, transition: { type: 'spring', stiffness: 120, damping: 12, delay: 0.3 } },
+  hover: { x: 5, scale: 1.05, boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)', backgroundColor: 'rgba(0, 212, 255, 0.3)', transition: { type: 'spring', stiffness: 300, damping: 15 } },
+  tap: { scale: 0.9, backgroundColor: 'rgba(0, 212, 255, 0.4)' },
 };
 
 function AddProfile() {
@@ -52,7 +28,7 @@ function AddProfile() {
     instagram: '',
     location: '',
     image: null,
-    projects: [{ title: '', description: '', codeSnippet: '', url: '' }],
+    projects: [], // Initialize as empty array
   });
   const [bioLength, setBioLength] = useState(0);
   const [error, setError] = useState('');
@@ -74,20 +50,24 @@ function AddProfile() {
 
   const addProject = () => setFormData({ ...formData, projects: [...formData.projects, { title: '', description: '', codeSnippet: '', url: '' }] });
 
-  const removeProject = (idx) => {
-    if (formData.projects.length > 1) setFormData({ ...formData, projects: formData.projects.filter((_, i) => i !== idx) });
-  };
+  const removeProject = (idx) => setFormData({ ...formData, projects: formData.projects.filter((_, i) => i !== idx) });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess(false);
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+    // Validate required fields
+    if (!formData.name) {
+      setError('Name is required');
+      return;
+    }
+    if (!formData.password || formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match or are empty');
       return;
     }
 
+    // Prepare data for submission
     const data = new FormData();
     data.append('name', formData.name);
     data.append('password', formData.password);
@@ -100,7 +80,7 @@ function AddProfile() {
       instagram: formData.instagram,
     }));
     data.append('location', formData.location);
-    data.append('projects', JSON.stringify(formData.projects));
+    data.append('projects', JSON.stringify(formData.projects)); // Projects can be empty
     if (formData.image) data.append('image', formData.image);
 
     try {
@@ -121,7 +101,6 @@ function AddProfile() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black overflow-hidden relative">
       <Navbar />
-      {/* Back Button */}
       <motion.button
         variants={backButtonVariants}
         initial="hidden"
@@ -276,8 +255,9 @@ function AddProfile() {
             </div>
             <div className="space-y-6">
               <h2 className="text-2xl text-neonPurple font-semibold flex items-center">
-                <FaCode className="mr-2" /> Projects
+                <FaCode className="mr-2" /> Projects 
               </h2>
+              <p className="text-gray-400 text-sm">Add projects to showcase your work. Leave empty if you don’t have any yet.</p>
               {formData.projects.map((project, idx) => (
                 <motion.div
                   key={idx}
@@ -294,7 +274,6 @@ function AddProfile() {
                     className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none"
                     whileFocus="focus"
                     variants={inputVariants}
-                    required
                   />
                   <motion.textarea
                     placeholder="Description"
@@ -323,16 +302,14 @@ function AddProfile() {
                     whileFocus="focus"
                     variants={inputVariants}
                   />
-                  {formData.projects.length > 1 && (
-                    <motion.button
-                      type="button"
-                      onClick={() => removeProject(idx)}
-                      className="text-red-400 hover:text-red-300 flex items-center"
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      <FaTrash className="mr-1" /> Remove Project
-                    </motion.button>
-                  )}
+                  <motion.button
+                    type="button"
+                    onClick={() => removeProject(idx)}
+                    className="text-red-400 hover:text-red-300 flex items-center"
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <FaTrash className="mr-1" /> Remove Project
+                  </motion.button>
                 </motion.div>
               ))}
               <motion.button
@@ -341,7 +318,7 @@ function AddProfile() {
                 className="text-neonBlue hover:text-neonPurple flex items-center"
                 whileHover={{ scale: 1.05 }}
               >
-                <FaPlus className="mr-2" /> Add Another Project
+                <FaPlus className="mr-2" /> Add Project
               </motion.button>
             </div>
             <motion.button
