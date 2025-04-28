@@ -457,75 +457,125 @@ function Paradise() {
 
         {/* Supported By */}
         <motion.section
-          initial="hidden"
-          animate="visible"
-          variants={sectionVariants}
-          className="container mx-auto py-24 px-6 bg-black relative"
+  initial="hidden"
+  animate="visible"
+  variants={sectionVariants}
+  className="container mx-auto py-24 px-6 bg-black relative"
+>
+  <div className="text-center mb-16">
+    <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-4 drop-shadow-[0_0_20px_rgba(0,212,255,0.9)] neon-heading">
+      Supported By
+    </h2>
+    <p className="text-lg text-cyan-200/80 max-w-2xl mx-auto">
+      Trusted by industry leaders and innovative partners
+    </p>
+  </div>
+
+  <div className="relative overflow-hidden py-12 bg-gradient-to-r from-gray-900/50 via-black to-gray-900/50 rounded-3xl border border-cyan-500/30 shadow-[0_0_30px_rgba(0,212,255,0.2)]">
+    <motion.div
+      animate={{ x: ['100%', '-100%'] }}
+      transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
+      className="flex gap-16 items-center"
+    >
+      {[
+        // Cloud Providers
+        { name: "AWS", src: "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png" },
+        { name: "Google Cloud", src: "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png" },
+        { name: "Microsoft Azure", src: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg" },
+        { name: "IBM Cloud", src: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" },
+        
+        // Development Platforms
+        { name: "Vercel", src: "https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-black.svg" },
+        { name: "GitHub", src: "https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png" },
+        { name: "GitLab", src: "https://about.gitlab.com/images/press/logo/png/gitlab-logo-500.png" },
+        
+        // Tech Companies
+        { name: "Microsoft", src: "https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" },
+        { name: "DigitalOcean", src: "https://upload.wikimedia.org/wikipedia/commons/f/ff/DigitalOcean_logo.svg" },
+        
+        // AI/ML
+        { name: "OpenAI", src: "https://upload.wikimedia.org/wikipedia/commons/4/4d/OpenAI_Logo.svg" },
+        { name: "Hugging Face", src: "https://huggingface.co/front/assets/huggingface_logo.svg" },
+        
+        // Security
+        { name: "Cloudflare", src: "https://upload.wikimedia.org/wikipedia/commons/9/94/Cloudflare_Logo.png" },
+        { name: "Let's Encrypt", src: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Let%27s_Encrypt_logo.svg" },
+        
+        // Government
+        { name: "MSME", src: "https://upload.wikimedia.org/wikipedia/commons/9/9a/MSME_Logo.png" },
+        { name: "Startup India", src: "https://www.startupindia.gov.in/content/dam/invest-india/Templates/public/startup-india-logo.svg" }
+      ].map((company, idx) => (
+        <motion.div
+          key={idx}
+          className="relative min-w-[180px] flex flex-col items-center px-4 group"
+          whileHover={{ scale: 1.15, y: -10, transition: { duration: 0.3 } }}
         >
-          <h2 className="text-6xl md:text-7xl font-bold text-cyan-400 mb-16 text-center drop-shadow-[0_0_20px_rgba(0,212,255,0.9)] neon-heading">
-            Supported By
-          </h2>
-          <div className="relative overflow-hidden py-12 bg-gradient-to-r from-gray-900/50 via-black to-gray-900/50 rounded-3xl border border-cyan-500/30 shadow-[0_0_30px_rgba(0,212,255,0.2)]">
-            <motion.div
-              animate={{ x: ['100%', '-100%'] }}
-              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-              className="flex gap-20 items-center"
-            >
-              {[
-                'https://www.microsoft.com/en-us/about/media/assets/images/microsoft-logo.png',
-                'https://www.cloudflare.com/static/logo-horizontal-light.png',
-                'https://vercel.com/_next/static/media/vercel-logotype-dark.111a1562.svg',
-                'https://www.msme.gov.in/sites/default/files/MSME-LOGO.png',
-                'https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png',
-                'https://www.digitalocean.com/_next/static/media/logo.3b0060c8.svg',
-                'https://aws.amazon.com/_next/static/images/aws-logo-dark.2f3b6e1a.svg',
-                'https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png',
-              ].map((src, idx) => (
-                <motion.div
-                  key={idx}
-                  className="relative"
-                  whileHover={{ scale: 1.2, y: -15, transition: { duration: 0.3 } }}
-                >
-                  <img
-                    src={src}
-                    alt="Supporter"
-                    className="h-24 md:h-32 object-contain invert brightness-125"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-                </motion.div>
-              ))}
-              {/* Duplicate for seamless scroll */}
-              {[
-                'https://www.microsoft.com/en-us/about/media/assets/images/microsoft-logo.png',
-                'https://www.cloudflare.com/static/logo-horizontal-light.png',
-                'https://vercel.com/_next/static/media/vercel-logotype-dark.111a1562.svg',
-                'https://www.msme.gov.in/sites/default/files/MSME-LOGO.png',
-                'https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png',
-                'https://www.digitalocean.com/_next/static/media/logo.3b0060c8.svg',
-                'https://aws.amazon.com/_next/static/images/aws-logo-dark.2f3b6e1a.svg',
-                'https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png',
-              ].map((src, idx) => (
-                <motion.div
-                  key={idx + 8}
-                  className="relative"
-                  whileHover={{ scale: 1.2, y: -15, transition: { duration: 0.3 } }}
-                >
-                  <img
-                    src={src}
-                    alt="Supporter"
-                    className="h-24 md:h-32 object-contain invert brightness-125"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg" />
-                </motion.div>
-              ))}
-            </motion.div>
-            {/* Frame Effects */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-purple-500" />
-            <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-purple-500" />
-            <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-500 to-purple-500" />
-            <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-cyan-500 to-purple-500" />
+          <div className="relative">
+            <img
+              src={company.src}
+              alt={company.name}
+              className="h-20 md:h-24 object-contain invert brightness-125 transition-all duration-300 group-hover:brightness-150"
+              loading="lazy"
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = `https://via.placeholder.com/180x80/000000/FFFFFF/?text=${encodeURIComponent(company.name)}`;
+                e.target.className = "h-20 md:h-24 object-contain";
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
           </div>
-        </motion.section>
+          <span className="mt-2 text-sm text-cyan-300/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {company.name}
+          </span>
+        </motion.div>
+      ))}
+      
+      {/* Duplicate first 8 for seamless scroll */}
+      {[
+        { name: "AWS", src: "https://d1.awsstatic.com/logos/aws-logo-lockups/poweredbyaws/PB_AWS_logo_RGB_stacked_REV_SQ.91cd4af40773cbfbd15577a3c2b8a346fe3e8fa2.png" },
+        { name: "Google Cloud", src: "https://cloud.google.com/_static/cloud/images/social-icon-google-cloud-1200-630.png" },
+        { name: "Microsoft Azure", src: "https://upload.wikimedia.org/wikipedia/commons/f/fa/Microsoft_Azure.svg" },
+        { name: "IBM Cloud", src: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" },
+        { name: "Vercel", src: "https://assets.vercel.com/image/upload/front/assets/design/vercel-triangle-black.svg" },
+        { name: "Netlify", src: "https://www.netlify.com/v3/img/components/logomark-dark.png" },
+        { name: "GitHub", src: "https://github.githubassets.com/images/modules/logos_page/GitHub-Logo.png" },
+        { name: "GitLab", src: "https://about.gitlab.com/images/press/logo/png/gitlab-logo-500.png" }
+      ].map((company, idx) => (
+        <motion.div
+          key={`dup-${idx}`}
+          className="relative min-w-[180px] flex flex-col items-center px-4 group"
+          whileHover={{ scale: 1.15, y: -10, transition: { duration: 0.3 } }}
+        >
+          <div className="relative">
+            <img
+              src={company.src}
+              alt={company.name}
+              className="h-20 md:h-24 object-contain invert brightness-125 transition-all duration-300 group-hover:brightness-150"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg" />
+          </div>
+          <span className="mt-2 text-sm text-cyan-300/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            {company.name}
+          </span>
+        </motion.div>
+      ))}
+    </motion.div>
+
+    {/* Frame Effects */}
+    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 animate-pulse" />
+    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 animate-pulse" />
+    <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-cyan-500 via-purple-500 to-cyan-500 animate-pulse" />
+    <div className="absolute top-0 right-0 w-1 h-full bg-gradient-to-b from-cyan-500 via-purple-500 to-cyan-500 animate-pulse" />
+    
+    {/* Glow Effects */}
+    <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute top-1/4 left-1/4 w-32 h-32 rounded-full bg-cyan-500/20 blur-3xl" />
+      <div className="absolute bottom-1/4 right-1/4 w-32 h-32 rounded-full bg-purple-500/20 blur-3xl" />
+    </div>
+  </div>
+</motion.section>
+
 
         {/* Footer Effect */}
         <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-cyan-500 via-purple-500 to-cyan-500 animate-[pulse_5s_infinite]" />
