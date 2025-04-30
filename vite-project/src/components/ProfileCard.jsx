@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { motion, useAnimation } from 'framer-motion';
-import { FaInstagram, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaCode, FaShareAlt, FaWhatsapp, FaFacebook, FaLink, FaEdit } from 'react-icons/fa';
+import { FaInstagram, FaTwitter, FaLinkedin, FaMapMarkerAlt, FaCode, FaShareAlt, FaWhatsapp, FaFacebook, FaLink, FaEdit, FaArrowRight } from 'react-icons/fa';
 
 // Animation variants for skills
 const skillVariants = {
@@ -149,7 +149,6 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
     }
   };
 
-  
   const getImageClasses = () => {
     switch (layout) {
       case 'list':
@@ -177,7 +176,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
               alt={profile.name}
               className={getImageClasses()}
             />
-            <div className="absolute W inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
           </div>
 
           <div className="flex-1 flex flex-col">
@@ -218,7 +217,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
             </p>
 
             {/* Skills Section for List View */}
-            <div className="mt-4 relative overflow-hidden">
+            <div className="mt-4">
               <h3 className="text-sm font-semibold text-cyan-400 mb-2 flex items-center">
                 <FaCode className="mr-2" size={12} /> Skills
               </h3>
@@ -266,51 +265,50 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
       ) : (
         <>
           {/* Default layout for grid and masonry */}
-          {/* Default layout for grid and masonry */}
-<div className="flex items-start space-x-5">
-  <div className="relative">
-    <img
-      src={profile.imageUrl || 'https://via.placeholder.com/150'}
-      alt={profile.name}
-      className={getImageClasses()}
-    />
-    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
-  </div>
-  <div className="flex-1">
-    <div className="flex justify-between items-start">
-      <Link
-        to={`/profile/${profile._id}`}
-        className="text-3xl font-extrabold text-white hover:text-cyan-400 transition-colors duration-200 drop-shadow-[0_0_8px_rgba(0,212,255,0.4)]"
-      >
-        {profile.name}
-      </Link>
-      {/* Share Button for Grid/Masonry */}
-      <motion.button
-        onClick={handleNativeShare}
-        variants={buttonVariants}
-        whileHover="hover"
-        whileTap="tap"
-        className="bg-cyan-500/20 text-cyan-300 p-2 rounded-full border border-cyan-400/30"
-        title="Share Profile"
-      >
-        <FaShareAlt size={14} />
-      </motion.button>
-    </div>
-    <p className="text-sm text-gray-300 flex items-center mt-2">
-      <FaMapMarkerAlt className="mr-2 text-cyan-400" size={16} />
-      {profile.location || 'Global Dev'}
-    </p>
-    <div className="bg-cyan-500/20 text-cyan-300 text-xs px-3 py-1 rounded-full border border-cyan-400/30 inline-block mt-2">
-      {profile.views} Views
-    </div>
-    <p className="text-sm text-gray-400 mt-2 italic line-clamp-2 leading-relaxed">
-      {profile.bio || 'No bio provided'}
-    </p>
-  </div>
-</div>
+          <div className="flex items-start space-x-5">
+            <div className="relative">
+              <img
+                src={profile.imageUrl || 'https://via.placeholder.com/150'}
+                alt={profile.name}
+                className={getImageClasses()}
+              />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-500/20 to-purple-500/20 blur-lg -z-10 animate-pulse" />
+            </div>
+            <div className="flex-1">
+              <div className="flex justify-between items-start">
+                <Link
+                  to={`/profile/${profile._id}`}
+                  className="text-3xl font-extrabold text-white hover:text-cyan-400 transition-colors duration-200 drop-shadow-[0_0_8px_rgba(0,212,255,0.4)]"
+                >
+                  {profile.name}
+                </Link>
+                {/* Share Button for Grid/Masonry */}
+                <motion.button
+                  onClick={handleNativeShare}
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  className="bg-cyan-500/20 text-cyan-300 p-2 rounded-full border border-cyan-400/30"
+                  title="Share Profile"
+                >
+                  <FaShareAlt size={14} />
+                </motion.button>
+              </div>
+              <p className="text-sm text-gray-300 flex items-center mt-2">
+                <FaMapMarkerAlt className="mr-2 text-cyan-400" size={16} />
+                {profile.location || 'Global Dev'}
+              </p>
+              <div className="bg-cyan-500/20 text-cyan-300 text-xs px-3 py-1 rounded-full border border-cyan-400/30 inline-block mt-2">
+                {profile.views} Views
+              </div>
+              <p className="text-sm text-gray-400 mt-2 italic line-clamp-2 leading-relaxed">
+                {profile.bio || 'No bio provided'}
+              </p>
+            </div>
+          </div>
 
           {/* Animated Skills Box */}
-          <div className="mt-6 relative">
+          <div className="mt-6">
             <h3 className="text-xl font-semibold text-cyan-400 mb-3 flex items-center drop-shadow-[0_0_6px_rgba(0,212,255,0.3)]">
               <FaCode className="mr-2" /> Skills
             </h3>
@@ -402,7 +400,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
         )}
       </div>
 
-      {/* Edit Button and Connect Button */}
+      {/* Edit Button, Connect Button, and See Full Profile Button */}
       <div className={`${layout === 'list' ? 'mt-6 flex flex-col md:flex-row gap-4' : 'mt-6 flex flex-col space-y-4'}`}>
         {loggedInUserId === profile._id && (
           <motion.div
@@ -430,6 +428,19 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
         >
           Connect
         </motion.a>
+        <motion.div
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap="tap"
+          className={`${layout === 'list' ? 'md:flex-1' : 'w-full text-center'}`}
+        >
+          <Link
+            to={`/profile/${profile._id}`}
+            className="bg-gradient-to-r from-cyan-500 to-purple-500 text-white py-3 px-6 rounded-lg font-semibold text-lg inline-flex items-center justify-center w-full"
+          >
+            See Full Profile <FaArrowRight className="ml-2" />
+          </Link>
+        </motion.div>
       </div>
 
       {/* Custom Share Menu */}
@@ -450,7 +461,8 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
               className="flex items-center space-x-2 text-white py-2 px-3 rounded-md hover:bg-cyan-500/20"
               whileHover={{ scale: 1.05, backgroundColor: `${option.color}20` }}
             >
-              <span style={{ color: option.color }}>{option.icon}</span>            <span>{option.name}</span>
+              <span style={{ color: option.color }}>{option.icon}</span>
+              <span>{option.name}</span>
             </motion.a>
           ))}
         </motion.div>
