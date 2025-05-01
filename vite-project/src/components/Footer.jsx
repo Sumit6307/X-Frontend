@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaGithub, FaTwitter, FaLinkedin, FaRocket, FaArrowUp } from 'react-icons/fa';
+import { FaGithub, FaTwitter, FaLinkedin, FaRocket, FaArrowUp , FaWhatsapp} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
 // Animation variants for footer elements
@@ -60,32 +60,26 @@ function Footer() {
               whileInView={{ opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.5 }}
             >
+             
+            
               <motion.a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                variants={iconVariants}
-                whileHover="hover"
-              >
-                <FaGithub className="text-gray-400" size={24} />
-              </motion.a>
-              <motion.a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                variants={iconVariants}
-                whileHover="hover"
-              >
-                <FaTwitter className="text-gray-400" size={24} />
-              </motion.a>
-              <motion.a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/company/gravityx1/?viewAsMember=true"
                 target="_blank"
                 rel="noopener noreferrer"
                 variants={iconVariants}
                 whileHover="hover"
               >
                 <FaLinkedin className="text-gray-400" size={24} />
+              </motion.a>
+
+              <motion.a
+                href="https://whatsapp  .com"
+                target="_blank"
+                rel="noopener noreferrer"
+                variants={iconVariants}
+                whileHover="hover"
+              >
+                <FaWhatsapp className="text-gray-400" size={24} />
               </motion.a>
             </motion.div>
           </motion.div>
