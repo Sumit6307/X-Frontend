@@ -126,9 +126,9 @@ function Footer() {
             className="flex flex-col items-center md:items-start"
           >
             <h4 className="text-lg font-semibold text-neonPurple mb-4">Get in Touch</h4>
-            <p className="text-sm text-gray-300 mb-2">support@gravityx.dev</p>
+            <p className="text-sm text-gray-300 mb-2">contact.gravityx1@gmail.com</p>
             <motion.a
-              href="mailto:support@gravityx.dev"
+              href="mailto:contact.gravityx1@gmail.com"
               className="shine-button inline-flex items-center px-4 py-2 rounded-lg text-white text-sm font-semibold"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
