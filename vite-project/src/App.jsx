@@ -29,6 +29,7 @@ import UsefulAPIs from './pages/UsefulAPIs';
 import OpenSource from './pages/OpenSource';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Suggest from './pages/Suggest';
+import TermsOfService from './pages/TermsOfService';
 
 
 
@@ -129,6 +130,7 @@ function App() {
           <Route path="/suggest" element={<Suggest />} />
           <Route path="/ai-career-guide" element={<AICarrerGuide />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
         </Routes>
       </div>
       <Footer />

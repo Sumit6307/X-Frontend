@@ -101,7 +101,7 @@ function Footer() {
               Privacy Policy
             </motion.a>
             <motion.a
-              href="#"
+              href="/terms-of-service"
               className="text-gray-300 mb-2"
               variants={linkVariants}
               whileHover="hover"
