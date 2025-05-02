@@ -27,7 +27,12 @@ import ValuableRepo from './pages/ValuableRepo';
 import ResearchPapers from './pages/ResearchPapers';
 import UsefulAPIs from './pages/UsefulAPIs';
 import OpenSource from './pages/OpenSource';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import Suggest from './pages/Suggest';
+
+
+
+
 
 // Starfield Component
 const Starfield = ({ theme }) => {
@@ -123,6 +128,7 @@ function App() {
           <Route path="/open-source" element={<OpenSource />} />
           <Route path="/suggest" element={<Suggest />} />
           <Route path="/ai-career-guide" element={<AICarrerGuide />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         </Routes>
       </div>
       <Footer />

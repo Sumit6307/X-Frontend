@@ -93,7 +93,7 @@ function Footer() {
           >
             <h4 className="text-lg font-semibold text-neonPurple mb-4">Explore</h4>
             <motion.a
-              href="#"
+              href="/privacy-policy"
               className="text-gray-300 mb-2"
               variants={linkVariants}
               whileHover="hover"
