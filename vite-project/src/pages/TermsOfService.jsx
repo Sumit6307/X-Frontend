@@ -220,7 +220,7 @@ const TermsOfService = () => {
                 href="mailto:contact.gravityx1@gmail.com"
                 className="text-cyan-400 hover:text-purple-400 transition-colors"
               >
-                support@gravityx.com
+                contact.gravityx1@gmail.com
               </a>
             </p>
           </motion.section>
