@@ -45,6 +45,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
   const [loggedInUserId, setLoggedInUserId] = useState(null);
   const [isSkillsHovered, setIsSkillsHovered] = useState(false);
   const controls = useAnimation(); // Animation controls for skills
+  const defaultImage = 'https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-social-media-profiles-icons-screensavers-as-templatex9xa_719432-2210.jpg?semt=ais_hybrid';
 
   // Start animation on mount
   useEffect(() => {
@@ -172,7 +173,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
         <div className="flex flex-col md:flex-row gap-6">
           <div className="relative flex-shrink-0">
             <img
-              src={profile.imageUrl || 'https://via.placeholder.com/150'}
+              src={profile.imageUrl || defaultImage}
               alt={profile.name}
               className={getImageClasses()}
             />
@@ -268,7 +269,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
           <div className="flex items-start space-x-5">
             <div className="relative">
               <img
-                src={profile.imageUrl || 'https://via.placeholder.com/150'}
+                src={profile.imageUrl || defaultImage}
                 alt={profile.name}
                 className={getImageClasses()}
               />

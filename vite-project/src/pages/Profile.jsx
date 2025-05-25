@@ -3,24 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { motion } from 'framer-motion';
 import Navbar from '../components/Navbar';
-import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaEdit, FaCode, FaExternalLinkAlt, FaLock, FaArrowLeft } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaTwitter, FaInstagram, FaEdit, FaCode, FaExternalLinkAlt, FaLock } from 'react-icons/fa';
 
 const containerVariants = { hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: 'easeOut' } } };
 const itemVariants = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.5 } } };
 const projectVariants = { hidden: { opacity: 0, y: 30 }, visible: (i) => ({ opacity: 1, y: 0, transition: { delay: i * 0.2, duration: 0.6 } }), hover: { scale: 1.03, boxShadow: '0 0 25px rgba(0, 212, 255, 0.4)' } };
-const noProjectVariants = { hidden: { opacity: 0, scale: 0.9 }, visible: { opacity: 1, scale: 1, transition: { duration: 0.6 } }, hover: { scale: 1.02, boxShadow: '0 0 20px rgba(0, 212, 255, 0.3)' } };
 const inputVariants = { focus: { scale: 1.02, borderColor: '#00D4FF', transition: { duration: 0.2 } } };
 const buttonVariants = { hover: { scale: 1.05, boxShadow: '0 0 15px rgba(0, 212, 255, 0.5)' }, tap: { scale: 0.95 } };
-const backButtonVariants = {
-  hidden: { x: -50, opacity: 0 },
-  visible: { x: 0, opacity: 1, transition: { type: 'spring', stiffness: 120, damping: 12, delay: 0.3 } },
-  hover: { x: 5, scale: 1.05, boxShadow: '0 0 25px rgba(0, 212, 255, 0.8)', backgroundColor: 'rgba(0, 212, 255, 0.3)', transition: { type: 'spring', stiffness: 300, damping: 15 } },
-  tap: { scale: 0.9, backgroundColor: 'rgba(0, 212, 255, 0.4)' },
-};
 
 function Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const defaultImage = 'https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-social-media-profiles-icons-screensavers-as-templatex9xa_719432-2210.jpg?semt=ais_hybrid';
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAuthForm, setShowAuthForm] = useState(false);
@@ -36,7 +30,9 @@ function Profile() {
         const token = localStorage.getItem('authToken');
         const headers = token ? { Authorization: `Bearer ${token}` } : {};
         
-        const response = await axios.get(`https://x-backend-1-zhox.onrender.com/api/profiles/${id}`, { headers });
+       
+
+const response = await axios.get(`https://x-backend-1-zhox.onrender.com/api/profiles/${id}`, { headers });
         setProfileData(response.data);
         
         if (token) {
@@ -50,20 +46,13 @@ function Profile() {
             setIsCurrentUser(false);
           }
         }
+
       } catch (error) {
-        console.error('Fetch Error:', error);
-        if (error.response?.status === 401) {
-          localStorage.removeItem('authToken');
-          setProfileData({ 
-            error: 'Please login again',
-            ...(error.response?.data || {})
-          });
-        } else {
-          setProfileData({ 
-            error: 'Failed to load profile',
-            details: error.message
-          });
-        }
+        console.error('Fetch Error:', error.response?.data || error.message);
+        setProfileData({ 
+          error: error.response?.status === 401 ? 'Please login again' : 'Failed to load profile',
+          details: error.message,
+        });
       } finally {
         setLoading(false);
       }
@@ -87,11 +76,12 @@ function Profile() {
     setAuthError('');
     setAuthLoading(true);
 
-    try {
+     try {
       const response = await axios.post('https://x-backend-1-zhox.onrender.com/api/profiles/login', credentials);
       localStorage.setItem('authToken', response.data.token);
       localStorage.setItem('userProfileId', response.data.profile._id);
       localStorage.setItem('userProfileName', response.data.profile.name);
+
       
       if (response.data.profile._id === id) {
         navigate(`/edit-profile/${id}`);
@@ -99,7 +89,7 @@ function Profile() {
         setAuthError('These credentials do not match this profile');
       }
     } catch (err) {
-      console.error('Login Error:', err.response || err.message);
+      console.error('Login Error:', err.response?.data || err.message);
       setAuthError(err.response?.data?.error || 'Invalid name or password. Please try again.');
     } finally {
       setAuthLoading(false);
@@ -129,23 +119,11 @@ function Profile() {
     </div>
   );
 
-  const { name = 'Unnamed Profile', bio = 'No bio provided', location = 'Unknown Location', socialLinks = {}, projects = [], views = 0, imageUrl = 'https://via.placeholder.com/150' } = profileData || {};
+  const { name = 'Unnamed Profile', bio = 'No bio provided', location = 'Unknown Location', socialLinks = {}, projects = [], views = 0, imageUrl = defaultImage } = profileData || {};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden relative">
       <Navbar />
-      <motion.button
-        variants={backButtonVariants}
-        initial="hidden"
-        animate="visible"
-        whileHover="hover"
-        whileTap="tap"
-        onClick={() => navigate(-1) || navigate('/')}
-        className="fixed top-30 left-6 z-20 flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 bg-black/80 border border-cyan-500/50 rounded-full text-cyan-400 font-semibold text-base md:text-lg shadow-[0_0_10px_rgba(0,212,255,0.3)] hover:text-purple-400 animate-[pulse_3s_infinite]"
-      >
-        <FaArrowLeft className="text-lg md:text-xl" /> Back
-      </motion.button>
-
       <div className="pt-20 px-4">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,212,255,0.1)_0%,transparent_70%)] -z-10" />
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500/50 to-purple-500/50" />
@@ -219,24 +197,7 @@ function Profile() {
                 </motion.div>
               ))
             ) : (
-              <motion.div
-                variants={noProjectVariants}
-                initial="hidden"
-                animate="visible"
-                whileHover="hover"
-                className="bg-gray-800/80 p-6 rounded-lg border border-cyan-500/10 shadow-[0_0_15px_rgba(0,212,255,0.1)] text-center"
-              >
-                <p className="text-gray-300 text-lg">I don’t have any projects yet</p>
-                {isCurrentUser && (
-                  <motion.a
-                    href={`/edit-profile/${id}`}
-                    className="mt-4 inline-block text-cyan-400 hover:text-purple-400 font-semibold transition-colors"
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    Add a project now
-                  </motion.a>
-                )}
-              </motion.div>
+              <p className="text-gray-400">No projects available</p>
             )}
           </motion.div>
           {showAuthForm && (

@@ -16,6 +16,7 @@ const backButtonVariants = {
 
 function AddProfile() {
   const navigate = useNavigate();
+  const defaultImage = 'https://img.freepik.com/premium-vector/vector-flat-illustration-grayscale-avatar-user-profile-person-icon-gender-neutral-silhouette-profile-picture-suitable-social-media-profiles-icons-screensavers-as-templatex9xa_719432-2210.jpg?semt=ais_hybrid';
   const [formData, setFormData] = useState({
     name: '',
     password: '',
@@ -28,11 +29,12 @@ function AddProfile() {
     instagram: '',
     location: '',
     image: null,
-    projects: [], // Initialize as empty array
+    projects: [],
   });
   const [bioLength, setBioLength] = useState(0);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [imagePreview, setImagePreview] = useState(defaultImage);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +42,17 @@ function AddProfile() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleFileChange = (e) => setFormData({ ...formData, image: e.target.files[0] });
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, image: file });
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => setImagePreview(reader.result);
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview(defaultImage);
+    }
+  };
 
   const handleProjectChange = (idx, field, value) => {
     const newProjects = [...formData.projects];
@@ -57,17 +69,12 @@ function AddProfile() {
     setError('');
     setSuccess(false);
 
-    // Validate required fields
-    if (!formData.name) {
-      setError('Name is required');
-      return;
-    }
-    if (!formData.password || formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match or are empty');
-      return;
+    if (!formData.name) return setError('Name is required');
+    if (!formData.password || formData.password !== formData.confirmPassword) return setError('Passwords do not match or are empty');
+    for (const project of formData.projects) {
+      if (!project.title) return setError('Project title is required for all projects');
     }
 
-    // Prepare data for submission
     const data = new FormData();
     data.append('name', formData.name);
     data.append('password', formData.password);
@@ -80,10 +87,15 @@ function AddProfile() {
       instagram: formData.instagram,
     }));
     data.append('location', formData.location);
-    data.append('projects', JSON.stringify(formData.projects)); // Projects can be empty
+    data.append('projects', JSON.stringify(formData.projects));
     if (formData.image) data.append('image', formData.image);
 
     try {
+      console.log('Submitting profile with data:', {
+        name: formData.name,
+        hasImage: !!formData.image,
+        projects: formData.projects,
+      });
       const res = await axios.post('https://x-backend-1-zhox.onrender.com/api/profiles/add', data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -93,7 +105,7 @@ function AddProfile() {
       setSuccess(true);
       setTimeout(() => navigate(`/profile/${res.data.profile._id}`), 2000);
     } catch (err) {
-      console.error(err);
+      console.error('Profile creation error:', err.response?.data || err.message);
       setError(err.response?.data?.error || 'Failed to add profile. Check console for details.');
     }
   };
@@ -186,12 +198,25 @@ function AddProfile() {
                 whileFocus="focus"
                 variants={inputVariants}
               />
-              <motion.input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="w-full p-4 rounded-lg bg-gray-800 text-white border border-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:bg-neonBlue/20 file:text-neonBlue file:border-0 hover:file:bg-neonBlue/40"
-              />
+              <div className="space-y-4">
+                <div className="flex items-center justify-center">
+                  <motion.img
+                    src={imagePreview}
+                    alt="Profile preview"
+                    className="w-24 h-24 rounded-full object-cover border-2 border-cyan-500 shadow-[0_0_10px_rgba(0,212,255,0.3)]"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </div>
+                <motion.input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="w-full p-4 rounded-lg bg-gray-800 text-white border border-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:bg-neonBlue/20 file:text-neonBlue file:border-0 hover:file:bg-neonBlue/40"
+                />
+                <p className="text-gray-400 text-sm text-center">Optional: Upload a profile image or use the default avatar.</p>
+              </div>
             </div>
             <div className="space-y-6">
               <h2 className="text-2xl text-neonPurple font-semibold flex items-center">
@@ -255,9 +280,9 @@ function AddProfile() {
             </div>
             <div className="space-y-6">
               <h2 className="text-2xl text-neonPurple font-semibold flex items-center">
-                <FaCode className="mr-2" /> Projects 
+                <FaCode className="mr-2" /> Projects
               </h2>
-              <p className="text-gray-400 text-sm">Add projects to showcase your work. Leave empty if you don’t have any yet.</p>
+              <p className="text-gray-400 text-sm">Add projects to showcase your work. Title is required for each project.</p>
               {formData.projects.map((project, idx) => (
                 <motion.div
                   key={idx}
@@ -268,12 +293,13 @@ function AddProfile() {
                 >
                   <motion.input
                     type="text"
-                    placeholder="Project Title"
+                    placeholder="Project Title (required)"
                     value={project.title}
                     onChange={(e) => handleProjectChange(idx, 'title', e.target.value)}
                     className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none"
                     whileFocus="focus"
                     variants={inputVariants}
+                    required
                   />
                   <motion.textarea
                     placeholder="Description"
