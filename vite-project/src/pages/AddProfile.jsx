@@ -177,11 +177,11 @@ function AddProfile() {
               <div className="relative">
                 <motion.textarea
                   name="bio"
-                  placeholder="Bio (max 500 characters)"
+                  placeholder="Short Bio (max 50 characters)"
                   value={formData.bio}
                   onChange={handleChange}
                   className="w-full p-4 rounded-lg bg-gray-800 text-white border border-gray-700 focus:outline-none resize-none"
-                  maxLength={500}
+                  maxLength={50}
                   rows={4}
                   whileFocus="focus"
                   variants={inputVariants}
@@ -311,7 +311,7 @@ function AddProfile() {
                     variants={inputVariants}
                   />
                   <motion.textarea
-                    placeholder="Code Snippet (e.g., function example() {...})"
+                    placeholder="Code Snippet (e.g., function example() {...}. Preferly Write -> Available  on my Github )"
                     value={project.codeSnippet}
                     onChange={(e) => handleProjectChange(idx, 'codeSnippet', e.target.value)}
                     className="w-full p-4 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none resize-none font-mono text-sm"
