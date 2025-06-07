@@ -279,7 +279,7 @@ function ProfileCard({ profile, onOpenProfile, layout = 'grid' }) {
               <div className="flex justify-between items-start">
                 <Link
                   to={`/profile/${profile._id}`}
-                  className="text-3xl font-extrabold text-white hover:text-cyan-400 transition-colors duration-200 drop-shadow-[0_0_8px_rgba(0,212,255,0.4)]"
+                  className="text-2xl font-extrabold text-white hover:text-cyan-400 transition-colors duration-200 drop-shadow-[0_0_8px_rgba(0,212,255,0.4)]"
                 >
                   {profile.name}
                 </Link>
