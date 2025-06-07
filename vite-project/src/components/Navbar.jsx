@@ -255,8 +255,8 @@ const DevHubButton = ({ isDevContainerOpen, setIsDevContainerOpen, toggleDevCont
 
 // Editable notification messages with icons
 const notificationMessages = [
-  { message: 'GravityX coming soon', icon: FaRocket },
-  { message: 'Hackathon is coming in the catchy way', icon: FaTrophy },
+  { message: 'We are going Open Source — Get Ready! 🚀', icon: FaRocket },
+  { message: 'GravityX Hackathon soon! 🧠', icon: FaTrophy },
   // Add more messages with icons here, e.g.:
   // { message: 'Join our community now!', icon: FaUsers }
 ];
@@ -621,7 +621,7 @@ function Navbar() {
                       onClick={() => addNotification(0)}
                       className="py-3 px-4 text-sm font-medium text-white bg-neonBlue/20 rounded-lg hover:bg-neonBlue/30 transition-colors"
                     >
-                      Add: GravityX Coming Soon
+                      Add: GravityX → Open Source Soon ✨
                     </motion.button>
                     <motion.button
                       whileHover={{ scale: 1.05 }}
@@ -629,7 +629,7 @@ function Navbar() {
                       onClick={() => addNotification(1)}
                       className="py-3 px-4 text-sm font-medium text-white bg-neonPurple/20 rounded-lg hover:bg-neonPurple/30 transition-colors"
                     >
-                      Add: Hackathon is Coming
+                      Add: Hack with GravityX — Coming up!
                     </motion.button>
                   </div>
 
