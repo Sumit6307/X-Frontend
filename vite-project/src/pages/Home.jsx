@@ -120,7 +120,7 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [layout, setLayout] = useState('grid');
   const [isLoading, setIsLoading] = useState(true);
-  const profilesPerPage = 18;
+  const profilesPerPage = 50;
 
   const fetchProfiles = async () => {
     try {
