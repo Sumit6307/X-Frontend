@@ -240,7 +240,7 @@ function Home() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            Connect with 2M+ Developers Worldwide in a Universe of Innovation
+            A Global Network of Developers — Connected by Code
           </motion.p>
           <Link to="/add-profile">
             <motion.button
