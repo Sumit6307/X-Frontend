@@ -30,7 +30,7 @@ import OpenSource from './pages/OpenSource';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Suggest from './pages/Suggest';
 import TermsOfService from './pages/TermsOfService';
-
+import { Analytics } from '@vercel/analytics/react'
 
 
 
@@ -132,6 +132,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
         </Routes>
+         <Analytics />
       </div>
       <Footer />
     </div>
