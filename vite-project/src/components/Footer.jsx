@@ -73,7 +73,7 @@ function Footer() {
               </motion.a>
 
               <motion.a
-                href="https://whatsapp  .com"
+                href="https://chat.whatsapp.com/FrzKMkVwTMFBMNHUE1qsAS"
                 target="_blank"
                 rel="noopener noreferrer"
                 variants={iconVariants}
